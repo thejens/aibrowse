@@ -160,7 +160,7 @@ fn uploads_need_confirmation_and_downloads_are_reported() {
     assert!(eval(&mut c, "document.getElementById('direct-out').textContent").is_empty());
 
     // Obvious secrets are refused, confirmed or not; so are relative paths.
-    let home = dirs::home_dir().unwrap().display();
+    let home = dirs::home_dir().unwrap().display().to_string();
     for (secret, why) in [
         (format!("{home}/.ssh/id_ed25519"), "refusing"),
         (format!("{home}/.aibrowse/env"), "refusing"),
