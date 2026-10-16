@@ -1,0 +1,81 @@
+name: release
+
+# A tag like v0.2.0 builds the binaries, packages them with the README, the licenses and
+# an install script, and publishes them on the tag's GitHub release.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build --release --locked -p aibrowse --target aarch64-apple-darwin
+      - run: cargo build --release --locked -p aibrowse --target x86_64-apple-darwin
+      # One binary for Apple silicon and Intel Macs.
+      - name: package
+        run: |
+          mkdir -p out/aibrowse
+          lipo -create -output out/aibrowse/aibrowse \
+            target/aarch64-apple-darwin/release/aibrowse \
+            target/x86_64-apple-darwin/release/aibrowse
+          cp README.md LICENSE-MIT LICENSE-APACHE .env.example out/aibrowse/
+          tar -czf aibrowse-macos-universal.tar.gz -C out aibrowse
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: aibrowse-macos-universal.tar.gz
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build --release --locked -p aibrowse
+      - name: package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path out/aibrowse | Out-Null
+          Copy-Item target/release/aibrowse.exe, README.md, LICENSE-MIT, LICENSE-APACHE, .env.example out/aibrowse/
+          Compress-Archive -Path out/aibrowse -DestinationPath aibrowse-windows-x64.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: aibrowse-windows-x64.zip
+
+  publish:
+    needs: [macos, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+      - name: checksums and install scripts
+        run: |
+          cp dist/install.sh dist/install.ps1 .
+          sha256sum aibrowse-macos-universal.tar.gz aibrowse-windows-x64.zip install.sh install.ps1 > SHA256SUMS
+      - name: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          files="aibrowse-macos-universal.tar.gz aibrowse-windows-x64.zip install.sh install.ps1 SHA256SUMS"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" $files --clobber
+          else
+            gh release create "$tag" $files --title "aibrowse $tag" --generate-notes
+          fi

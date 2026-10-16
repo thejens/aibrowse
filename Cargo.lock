@@ -55,7 +55,7 @@ dependencies = [
 
 [[package]]
 name = "aibrowse"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "ab_glyph",
  "aibrowse-browser",
@@ -85,7 +85,7 @@ dependencies = [
 
 [[package]]
 name = "aibrowse-browser"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "aibrowse-cdp",
  "aibrowse-input",
@@ -105,7 +105,7 @@ dependencies = [
 
 [[package]]
 name = "aibrowse-cdp"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "chromiumoxide_cdp",
  "chromiumoxide_types",
@@ -120,7 +120,7 @@ dependencies = [
 
 [[package]]
 name = "aibrowse-frontdoor"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "flate2",
  "reqwest",
@@ -134,7 +134,7 @@ dependencies = [
 
 [[package]]
 name = "aibrowse-handoff"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "aibrowse-cdp",
  "aibrowse-input",
@@ -151,7 +151,7 @@ dependencies = [
 
 [[package]]
 name = "aibrowse-input"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "rand 0.10.3",
  "rand_distr",
@@ -161,7 +161,7 @@ dependencies = [
 
 [[package]]
 name = "aibrowse-navigator"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "aibrowse-browser",
  "aibrowse-input",
@@ -179,7 +179,7 @@ dependencies = [
 
 [[package]]
 name = "aibrowse-network"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "aibrowse-cdp",
  "base64 0.23.1",
@@ -195,7 +195,7 @@ dependencies = [
 
 [[package]]
 name = "aibrowse-perception"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "aibrowse-browser",
  "aibrowse-cdp",

@@ -62,6 +62,18 @@ comments refer to.
   the user: …". Records from before load without them.
 - **Not yet:** resuming after a worker crash (the journal is there, nothing reads it).
 
+- **Platforms and the CDP transport (2026-10-16).** macOS and Linux drive Chrome over
+  `--remote-debugging-pipe` (file descriptors 3 and 4): no listening port exists for a
+  page to find. Windows has no such inherited descriptors for a non-CRT parent, so
+  there Chrome starts with `--remote-debugging-port=0`, writes the port it took to
+  `DevToolsActivePort` in the profile, and aibrowse attaches over that WebSocket
+  (`crates/browser/src/transport.rs`); the port listens on localhost only. On Windows
+  Chrome is found under Program Files or LocalAppData, its version is the folder beside
+  `chrome.exe`, the profile lock is its held `lockfile`, files are private by the
+  profile's ACLs, and Ctrl+C, Ctrl+Break and closing the console stop the server.
+  Releases (`.github/workflows/release.yml`, on a `v*` tag) publish a universal macOS
+  binary and a Windows x64 one with install scripts and SHA-256 sums.
+
 ## 5.2 Action engine (J4, J7)
 
 - **Primitives:** `click`, `fill`, `type` (with human cadence), `press`, `select`,

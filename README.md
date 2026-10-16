@@ -25,7 +25,25 @@ resources).
 
 ## Install
 
-Requirements: Rust (stable, 1.89 or newer) and macOS or Linux.
+**From a release** (macOS, universal; Windows x64):
+
+```sh
+# macOS
+curl -fsSL https://github.com/thejens/aibrowse/releases/latest/download/install.sh | sh
+```
+
+```powershell
+# Windows (PowerShell)
+irm https://github.com/thejens/aibrowse/releases/latest/download/install.ps1 | iex
+```
+
+Both install to `~/.aibrowse/bin` (`%USERPROFILE%\.aibrowse\bin` on Windows) after
+checking the download's SHA-256. The binaries aren't code-signed yet: the macOS script
+clears the quarantine mark itself; a binary downloaded through a browser needs
+`xattr -d com.apple.quarantine aibrowse`. aibrowse drives the installed Google Chrome
+(or a Chrome for Testing in `~/.aibrowse/chrome`).
+
+**From source** (macOS, Linux, Windows): Rust stable, 1.89 or newer.
 
 ```sh
 git clone https://github.com/thejens/aibrowse && cd aibrowse
@@ -116,9 +134,18 @@ Profiles live in `~/.aibrowse/profiles/<name>/`. Secrets go in `.env` (gitignore
 for example your home connection through WireGuard; with the exit down, the profile
 doesn't browse. [docs/server.md](docs/server.md) shows the setup.
 
+## Windows
+
+aibrowse runs on Windows with the installed Google Chrome. One difference: on macOS and
+Linux it talks to Chrome over a pipe, so no debugging port exists; on Windows Chrome
+opens its DevTools port on localhost (a free port, reachable from this machine only)
+and aibrowse attaches to it. A page probing localhost could find that port. Handoff
+live views open in the default browser; there are no desktop notifications.
+
 ## How it stays inconspicuous
 
-- Chrome is driven over `--remote-debugging-pipe`: no debugging port to discover.
+- Chrome is driven over `--remote-debugging-pipe`: no debugging port to discover
+  (macOS and Linux; see Windows above).
 - No `--enable-automation`; `navigator.webdriver` is false (asserted by `make test-live`).
 - The `Runtime` domain is never enabled; helper scripts run in an isolated world.
 - Headless is indistinguishable from headful to a page (`make test-live` diffs ~30

@@ -66,6 +66,10 @@ pub fn init_logging() {
 pub async fn run(args: &[String]) -> anyhow::Result<()> {
     match args.first().map(String::as_str) {
         None | Some("mcp") => serve().await,
+        Some("--version" | "version") => {
+            println!("aibrowse {}", env!("CARGO_PKG_VERSION"));
+            Ok(())
+        }
         Some("reload") => serve_reloading().await,
         Some("serve") => remote::run(&args[1..]).await,
         Some("observe") => observe(&args[1..]).await,
