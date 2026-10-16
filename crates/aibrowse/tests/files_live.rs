@@ -138,7 +138,8 @@ fn uploads_need_confirmation_and_downloads_are_reported() {
     let profile = "test-files";
     // Uploads are gated even when the profile lets the agent act alone.
     set_policy(profile, r#"{"confirm": "off"}"#);
-    let downloads = PathBuf::from(std::env::var("HOME").unwrap())
+    let downloads = dirs::home_dir()
+        .unwrap()
         .join(".aibrowse/downloads")
         .join(profile);
     let _ = std::fs::remove_dir_all(&downloads);
@@ -159,7 +160,7 @@ fn uploads_need_confirmation_and_downloads_are_reported() {
     assert!(eval(&mut c, "document.getElementById('direct-out').textContent").is_empty());
 
     // Obvious secrets are refused, confirmed or not; so are relative paths.
-    let home = std::env::var("HOME").unwrap();
+    let home = dirs::home_dir().unwrap().display();
     for (secret, why) in [
         (format!("{home}/.ssh/id_ed25519"), "refusing"),
         (format!("{home}/.aibrowse/env"), "refusing"),

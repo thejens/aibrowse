@@ -57,7 +57,8 @@ fn serve() -> u16 {
 }
 
 fn profile_dir() -> std::path::PathBuf {
-    std::path::PathBuf::from(std::env::var("HOME").unwrap())
+    dirs::home_dir()
+        .unwrap()
         .join(".aibrowse/profiles")
         .join(PROFILE)
 }

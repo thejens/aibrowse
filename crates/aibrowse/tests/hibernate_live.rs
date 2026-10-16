@@ -56,7 +56,9 @@ fn headless() -> bool {
 }
 
 fn profile_dir() -> PathBuf {
-    PathBuf::from(std::env::var("HOME").unwrap()).join(format!(".aibrowse/profiles/{PROFILE}"))
+    dirs::home_dir()
+        .unwrap()
+        .join(format!(".aibrowse/profiles/{PROFILE}"))
 }
 
 /// The pid of the Chrome running the profile, from Chrome's lock ("<host>-<pid>").
