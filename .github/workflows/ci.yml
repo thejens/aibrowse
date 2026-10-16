@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -25,3 +25,18 @@ jobs:
       - run: cargo clippy --workspace --all-targets -- -D warnings
       # Unit and golden tests; the live suites need Chrome and run with `make test-live`.
       - run: cargo test --workspace
+
+  # A real Chrome on Windows (the runner has Google Chrome installed): the DevTools-port
+  # transport, finding Chrome, the profile lock, input, and an MCP session end to end.
+  live-windows:
+    runs-on: windows-latest
+    env:
+      AIBROWSE_TEST_HEADLESS: "1"
+      AIBROWSE_HANDOFF_OPEN: "0"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo test -p aibrowse-browser --test live -- --ignored --test-threads=1 humanized_input navigating_to_the_same a_field_that
+      - run: cargo test -p aibrowse --test mcp_live -- --ignored --test-threads=1 agent_loop_over_mcp
+      - run: cargo test -p aibrowse --test read_live -- --ignored --test-threads=1

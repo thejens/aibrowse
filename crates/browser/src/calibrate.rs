@@ -18,7 +18,7 @@ use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpListener;
 
 use crate::error::{BrowserError, Result};
-use crate::launch::spawn;
+use crate::transport::{self, spawn};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UserAgentIdentity {
@@ -93,6 +93,31 @@ pub(crate) async fn user_agent_identity(chrome: &Path) -> Result<UserAgentIdenti
     Ok(identity)
 }
 
+/// On Windows `chrome.exe --version` prints nothing (it is a GUI program); the version
+/// is the name of the folder beside it that holds the browser's files
+/// (`Application\141.0.7390.55\`), the newest when an update left two.
+#[cfg(windows)]
+fn chrome_version(chrome: &Path) -> Result<String> {
+    let dir = chrome
+        .parent()
+        .ok_or_else(|| BrowserError::Launch(format!("{} has no folder", chrome.display())))?;
+    let mut versions: Vec<(Vec<u32>, String)> = std::fs::read_dir(dir)?
+        .filter_map(|entry| {
+            let name = entry.ok()?.file_name().to_str()?.to_owned();
+            let parts: Vec<u32> = name
+                .split('.')
+                .map(|p| p.parse().ok())
+                .collect::<Option<_>>()?;
+            (parts.len() == 4).then_some((parts, name))
+        })
+        .collect();
+    versions.sort();
+    versions.pop().map(|(_, name)| name).ok_or_else(|| {
+        BrowserError::Launch(format!("no version folder beside {}", chrome.display()))
+    })
+}
+
+#[cfg(not(windows))]
 fn chrome_version(chrome: &Path) -> Result<String> {
     let output = std::process::Command::new(chrome)
         .arg("--version")
@@ -150,7 +175,7 @@ async fn measure_in(chrome: &Path, scratch: &Path) -> Result<UserAgentIdentity> 
     });
 
     let mut args = vec![
-        "--remote-debugging-pipe".to_owned(),
+        transport::SWITCH.to_owned(),
         format!("--user-data-dir={}", scratch.display()),
         "--headless".to_owned(),
         "--no-first-run".to_owned(),

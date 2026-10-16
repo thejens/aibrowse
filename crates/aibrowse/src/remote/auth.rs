@@ -148,7 +148,8 @@ fn parse_profiles(value: &str) -> Vec<String> {
 /// briefly.
 fn load_or_create(path: &Path) -> anyhow::Result<(String, bool)> {
     use std::io::Write;
-    use std::os::unix::fs::OpenOptionsExt;
+
+    use crate::private_fs::Private;
 
     match std::fs::read_to_string(path) {
         Ok(token) => return Ok((token.trim().to_owned(), false)),
@@ -164,7 +165,7 @@ fn load_or_create(path: &Path) -> anyhow::Result<(String, bool)> {
     let mut file = std::fs::OpenOptions::new()
         .write(true)
         .create_new(true)
-        .mode(0o600)
+        .private()
         .open(path)
         .with_context(|| format!("creating {}", path.display()))?;
     writeln!(file, "{token}").with_context(|| format!("writing {}", path.display()))?;
@@ -270,6 +271,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(unix)]
     fn the_token_file_is_created_private_and_reused() {
         use std::os::unix::fs::PermissionsExt;
 

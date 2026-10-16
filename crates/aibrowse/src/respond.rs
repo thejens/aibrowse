@@ -155,21 +155,31 @@ pub fn serve_remotely() {
 }
 
 /// Whether pages and notifications may go to this computer's screen. Never for
-/// automated runs (tests, scripts set `AIBROWSE_HANDOFF_OPEN=0`), remote users, or off
-/// macOS.
+/// automated runs (tests, scripts set `AIBROWSE_HANDOFF_OPEN=0`), remote users, or on
+/// Linux (often a server without one).
 fn may_use_screen() -> bool {
-    cfg!(target_os = "macos")
+    cfg!(any(target_os = "macos", windows))
         && !REMOTE.load(Ordering::Relaxed)
         && !std::env::var("AIBROWSE_HANDOFF_OPEN").is_ok_and(|v| v == "0")
 }
 
 /// Opens `url` in the default browser. Returns false where that isn't possible.
 pub fn open_in_browser(url: &str) -> bool {
-    may_use_screen()
-        && std::process::Command::new("open")
-            .arg(url)
-            .status()
-            .is_ok_and(|s| s.success())
+    // On Windows through the URL protocol handler: `cmd /c start` would split the
+    // address at its `&`s.
+    #[cfg(windows)]
+    let mut command = {
+        let mut command = std::process::Command::new("rundll32");
+        command.args(["url.dll,FileProtocolHandler", url]);
+        command
+    };
+    #[cfg(not(windows))]
+    let mut command = {
+        let mut command = std::process::Command::new("open");
+        command.arg(url);
+        command
+    };
+    may_use_screen() && command.status().is_ok_and(|s| s.success())
 }
 
 /// Asks for the user's attention: a notification, plus the page itself unless they
@@ -180,7 +190,13 @@ pub fn notify_user(url: &str, reason: &str, open_page: bool) -> bool {
         return false;
     }
     if open_page {
-        open_in_browser(url);
+        let opened = open_in_browser(url);
+        // No notification on Windows: the page opening is how the user is reached.
+        if cfg!(windows) {
+            return opened;
+        }
+    } else if cfg!(windows) {
+        return false;
     }
     // AppleScript string literal: escape backslashes and quotes.
     let message = reason.replace('\\', "\\\\").replace('"', "\\\"");

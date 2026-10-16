@@ -27,6 +27,7 @@ mod instructions;
 mod marks;
 mod network_tools;
 mod persona;
+mod private_fs;
 mod reload;
 mod remote;
 mod respond;
@@ -65,6 +66,10 @@ pub fn init_logging() {
 pub async fn run(args: &[String]) -> anyhow::Result<()> {
     match args.first().map(String::as_str) {
         None | Some("mcp") => serve().await,
+        Some("--version" | "version") => {
+            println!("aibrowse {}", env!("CARGO_PKG_VERSION"));
+            Ok(())
+        }
         Some("reload") => serve_reloading().await,
         Some("serve") => remote::run(&args[1..]).await,
         Some("observe") => observe(&args[1..]).await,
@@ -113,19 +118,36 @@ async fn serve() -> anyhow::Result<()> {
     Ok(())
 }
 
+/// A request to stop: SIGTERM, SIGINT or SIGHUP on macOS and Linux; Ctrl+C, Ctrl+Break
+/// or the console closing on Windows.
 async fn termination() {
-    use tokio::signal::unix::{SignalKind, signal};
-    let (Ok(mut term), Ok(mut int), Ok(mut hup)) = (
-        signal(SignalKind::terminate()),
-        signal(SignalKind::interrupt()),
-        signal(SignalKind::hangup()),
-    ) else {
-        return std::future::pending().await;
-    };
-    tokio::select! {
-        _ = term.recv() => {}
-        _ = int.recv() => {}
-        _ = hup.recv() => {}
+    #[cfg(unix)]
+    {
+        use tokio::signal::unix::{SignalKind, signal};
+        let (Ok(mut term), Ok(mut int), Ok(mut hup)) = (
+            signal(SignalKind::terminate()),
+            signal(SignalKind::interrupt()),
+            signal(SignalKind::hangup()),
+        ) else {
+            return std::future::pending().await;
+        };
+        tokio::select! {
+            _ = term.recv() => {}
+            _ = int.recv() => {}
+            _ = hup.recv() => {}
+        }
+    }
+    #[cfg(windows)]
+    {
+        use tokio::signal::windows::{ctrl_break, ctrl_c, ctrl_close};
+        let (Ok(mut c), Ok(mut brk), Ok(mut close)) = (ctrl_c(), ctrl_break(), ctrl_close()) else {
+            return std::future::pending().await;
+        };
+        tokio::select! {
+            _ = c.recv() => {}
+            _ = brk.recv() => {}
+            _ = close.recv() => {}
+        }
     }
 }
 

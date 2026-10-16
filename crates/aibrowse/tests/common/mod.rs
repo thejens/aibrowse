@@ -145,7 +145,7 @@ pub fn find_ref(outline: &str, needle: &str) -> String {
 pub fn set_policy(profile: &str, policy: &str) {
     let dir = format!(
         "{}/.aibrowse/profiles/{profile}",
-        std::env::var("HOME").unwrap()
+        dirs::home_dir().unwrap().display()
     );
     std::fs::create_dir_all(&dir).unwrap();
     std::fs::write(format!("{dir}/policy.json"), policy).unwrap();
@@ -153,8 +153,11 @@ pub fn set_policy(profile: &str, policy: &str) {
 
 pub fn has_jev_key() -> bool {
     std::env::var("JEV_API_KEY").is_ok()
-        || std::fs::read_to_string(format!("{}/.aibrowse/env", std::env::var("HOME").unwrap()))
-            .is_ok_and(|env| env.contains("JEV_API_KEY="))
+        || std::fs::read_to_string(format!(
+            "{}/.aibrowse/env",
+            dirs::home_dir().unwrap().display()
+        ))
+        .is_ok_and(|env| env.contains("JEV_API_KEY="))
 }
 
 pub fn http_get(url: &str) -> String {
