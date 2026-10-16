@@ -229,7 +229,17 @@ mod tests {
         fs::create_dir_all(&dir).unwrap();
         fs::write(dir.join("events.jsonl"), "{}\n").unwrap();
         let when = now - Duration::from_secs(age_days * 24 * 60 * 60);
-        File::open(&dir)
+        // A folder opens as a file on Windows only with backup semantics.
+        let mut options = OpenOptions::new();
+        options.read(true);
+        #[cfg(windows)]
+        {
+            use std::os::windows::fs::OpenOptionsExt;
+            options.custom_flags(0x0200_0000); // FILE_FLAG_BACKUP_SEMANTICS
+            options.write(true);
+        }
+        options
+            .open(&dir)
             .unwrap()
             .set_times(FileTimes::new().set_modified(when))
             .unwrap();

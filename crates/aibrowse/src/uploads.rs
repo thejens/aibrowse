@@ -175,9 +175,17 @@ fn refuse_sensitive(path: &Path, home: &Path, given: &str) -> Result<(), String>
     Ok(())
 }
 
+/// The path with `~` for the home directory, its parts joined with `/` on every
+/// platform: it is shown to the user in an approval, not opened.
 fn shown(path: &Path, home: &Path) -> String {
     match path.strip_prefix(home) {
-        Ok(rest) => format!("~/{}", rest.display()),
+        Ok(rest) => {
+            let parts: Vec<String> = rest
+                .components()
+                .map(|c| c.as_os_str().to_string_lossy().into_owned())
+                .collect();
+            format!("~/{}", parts.join("/"))
+        }
         Err(_) => path.display().to_string(),
     }
 }
