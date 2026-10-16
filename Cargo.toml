@@ -54,3 +54,11 @@ unsafe_code = "forbid"
 
 [workspace.lints.clippy]
 all = { level = "warn", priority = -1 }
+
+# Full debug info made a debug build of this workspace 12-15 GB; line tables keep
+# backtraces readable at a fraction of that.
+[profile.dev]
+debug = "line-tables-only"
+
+[profile.dev.package."*"]
+debug = false
