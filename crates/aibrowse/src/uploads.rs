@@ -213,6 +213,8 @@ mod tests {
             ] {
                 std::fs::write(root.join(file), "data").unwrap();
             }
+            // A symlink into ~/.ssh (Windows needs privileges to make one).
+            #[cfg(unix)]
             std::os::unix::fs::symlink(root.join(".ssh/id_ed25519"), root.join("Documents/cv.pdf"))
                 .unwrap();
             Self(root)
@@ -243,20 +245,26 @@ mod tests {
     #[test]
     fn secrets_are_refused() {
         let home = Home::new("secrets");
-        for secret in [
+        let mut secrets = vec![
             ".ssh/id_ed25519",
             "Documents/../.ssh/id_ed25519",
-            "Documents/cv.pdf", // a symlink into ~/.ssh
             "Documents/id_ed25519",
             "Documents/cert.PEM",
             "Library/Keychains/login.keychain-db",
             ".aibrowse/downloads/../../.ssh/id_ed25519",
-        ] {
+        ];
+        if cfg!(unix) {
+            secrets.push("Documents/cv.pdf"); // a symlink into ~/.ssh
+        }
+        for secret in secrets {
             let err = home.check(secret).unwrap_err();
             assert!(err.starts_with("refusing"), "{secret}: {err}");
         }
-        let err = check_upload_in(&["/etc/hosts".into()], &home.0).unwrap_err();
-        assert!(err.starts_with("refusing"), "{err}");
+        #[cfg(unix)]
+        {
+            let err = check_upload_in(&["/etc/hosts".into()], &home.0).unwrap_err();
+            assert!(err.starts_with("refusing"), "{err}");
+        }
     }
 
     #[test]

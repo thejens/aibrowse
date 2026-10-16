@@ -1,25 +1,23 @@
 use std::path::{Path, PathBuf};
-use std::process::Stdio;
 use std::time::Duration;
 
 use aibrowse_cdp::{Connection, Session};
 use aibrowse_network::Catalog;
-use command_fds::{CommandFdExt, FdMapping};
 use serde::Deserialize;
 use serde_json::json;
-use tokio::net::unix::pipe;
-use tokio::process::{Child, Command};
+use tokio::process::Child;
 
 use crate::calibrate::{UserAgentIdentity, user_agent_identity};
 use crate::downloads::Downloads;
 use crate::early_identity;
-use crate::error::{BrowserError, Result};
+use crate::error::Result;
 use crate::locate::find_chrome;
 use crate::platform;
 use crate::profile::Profile;
 use crate::profile_prefs;
 use crate::tab::{Hand, Tab};
 use crate::targets::{SharedTargets, watch_targets};
+use crate::transport::{self, spawn};
 
 #[derive(Debug, Clone)]
 pub struct LaunchOptions {
@@ -325,11 +323,11 @@ fn chrome_args(
 ) -> Vec<String> {
     let window = WindowBounds::for_display(&profile.display, options);
     // Deliberately absent: --enable-automation (sets navigator.webdriver and shows the
-    // "controlled by automated software" bar) and --remote-debugging-port (an open,
-    // discoverable debugging port). Keep this list minimal: every non-default switch is a
+    // "controlled by automated software" bar), and on macOS and Linux
+    // --remote-debugging-port (an open, discoverable debugging port; transport.rs). Keep this list minimal: every non-default switch is a
     // potential behavioral difference from a normal user's browser.
     let mut args = vec![
-        "--remote-debugging-pipe".to_owned(),
+        transport::SWITCH.to_owned(),
         format!("--user-data-dir={}", profile.user_data_dir().display()),
         "--no-first-run".to_owned(),
         "--no-default-browser-check".to_owned(),
@@ -369,47 +367,6 @@ fn chrome_args(
     }
     args.push("about:blank".to_owned());
     args
-}
-
-/// Spawns Chrome with a CDP pipe on fds 3/4 and waits until it answers.
-pub(crate) async fn spawn(chrome: &Path, args: Vec<String>) -> Result<(Child, Connection)> {
-    // Chrome reads commands from fd 3 and writes responses to fd 4.
-    let (to_chrome_read, to_chrome_write) = std::io::pipe()?;
-    let (from_chrome_read, from_chrome_write) = std::io::pipe()?;
-
-    let mut command = Command::new(chrome);
-    command
-        .args(args)
-        .stdin(Stdio::null())
-        .stdout(Stdio::null())
-        .stderr(Stdio::null())
-        .kill_on_drop(true)
-        .fd_mappings(vec![
-            FdMapping {
-                parent_fd: to_chrome_read.into(),
-                child_fd: 3,
-            },
-            FdMapping {
-                parent_fd: from_chrome_write.into(),
-                child_fd: 4,
-            },
-        ])
-        .map_err(|e| BrowserError::Launch(e.to_string()))?;
-    let child = command
-        .spawn()
-        .map_err(|e| BrowserError::Launch(format!("{}: {e}", chrome.display())))?;
-    // Dropping the command closes our copies of the child's pipe ends; otherwise we'd
-    // never observe EOF when Chrome exits.
-    drop(command);
-
-    let writer = pipe::Sender::from_owned_fd(to_chrome_write.into())?;
-    let reader = pipe::Receiver::from_owned_fd(from_chrome_read.into())?;
-    let conn = Connection::new(reader, writer);
-    // The first call doubles as a readiness check for the pipe.
-    conn.browser()
-        .call_with_timeout("Browser.getVersion", json!({}), Duration::from_secs(20))
-        .await?;
-    Ok((child, conn))
 }
 
 #[derive(Deserialize)]

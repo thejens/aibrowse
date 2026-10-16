@@ -29,6 +29,7 @@ mod tab_keys;
 mod tab_script;
 mod tab_view;
 mod targets;
+mod transport;
 mod webmcp;
 mod webmcp_polyfill;
 

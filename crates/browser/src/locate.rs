@@ -25,16 +25,35 @@ pub fn find_chrome() -> Result<PathBuf> {
     if let Some(path) = newest_chrome_for_testing() {
         return Ok(path);
     }
-    SYSTEM_CHROME
-        .iter()
-        .map(PathBuf::from)
+    system_chrome()
+        .into_iter()
         .find(|p| p.is_file())
         .ok_or_else(|| {
             BrowserError::ChromeNotFound(
-                "no Chrome for Testing in ~/.aibrowse/chrome (run `make chrome`) and no system Chrome"
+                "no Chrome for Testing in ~/.aibrowse/chrome (run `make chrome`, or install Google Chrome) and no system Chrome"
                     .into(),
             )
         })
+}
+
+#[cfg(target_os = "macos")]
+fn system_chrome() -> Vec<PathBuf> {
+    SYSTEM_CHROME.iter().map(PathBuf::from).collect()
+}
+
+#[cfg(target_os = "linux")]
+fn system_chrome() -> Vec<PathBuf> {
+    SYSTEM_CHROME.iter().map(PathBuf::from).collect()
+}
+
+/// Chrome installs per machine (Program Files) or per user (LocalAppData).
+#[cfg(windows)]
+fn system_chrome() -> Vec<PathBuf> {
+    ["PROGRAMFILES", "PROGRAMFILES(X86)", "LOCALAPPDATA"]
+        .iter()
+        .filter_map(std::env::var_os)
+        .map(|root| PathBuf::from(root).join(r"Google\Chrome\Application\chrome.exe"))
+        .collect()
 }
 
 #[cfg(target_os = "macos")]
@@ -42,7 +61,7 @@ const SYSTEM_CHROME: &[&str] = &["/Applications/Google Chrome.app/Contents/MacOS
 /// Real binaries come before launcher scripts: Debian's `/usr/bin/chromium` wrapper adds
 /// switches of its own (`--load-extension`, `--enable-remote-extensions`, ...) that would
 /// make the browser differ from the one we configure.
-#[cfg(not(target_os = "macos"))]
+#[cfg(target_os = "linux")]
 const SYSTEM_CHROME: &[&str] = &[
     "/opt/google/chrome/chrome",
     "/usr/bin/google-chrome-stable",
@@ -76,6 +95,7 @@ fn binary_in(install_dir: &Path) -> Option<PathBuf> {
         "chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
         "chrome-mac-x64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
         "chrome-linux64/chrome",
+        "chrome-win64/chrome.exe",
     ]
     .iter()
     .map(|rel| install_dir.join(rel))

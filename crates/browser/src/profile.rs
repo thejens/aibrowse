@@ -82,6 +82,23 @@ impl Profile {
     /// Fails fast when another Chrome already runs this profile. Chrome would otherwise
     /// hand our launch over to the running instance and exit, leaving us waiting on a
     /// browser that never answers.
+    #[cfg(windows)]
+    pub fn ensure_not_in_use(&self) -> Result<()> {
+        // On Windows Chrome holds `lockfile` in the user data directory open, without
+        // sharing, for as long as it runs: one that can be removed is left over from a
+        // run that ended.
+        let lockfile = self.user_data_dir().join("lockfile");
+        if lockfile.exists() && std::fs::remove_file(&lockfile).is_err() {
+            return Err(BrowserError::Profile(format!(
+                "profile {:?} is already open in another browser session; close it or use a different profile",
+                self.name
+            )));
+        }
+        Ok(())
+    }
+
+    /// Fails fast when another Chrome already runs this profile (see the Windows twin).
+    #[cfg(unix)]
     pub fn ensure_not_in_use(&self) -> Result<()> {
         // Chrome's lock is a symlink whose target is "<hostname>-<pid>".
         let Ok(target) = std::fs::read_link(self.user_data_dir().join("SingletonLock")) else {
@@ -119,6 +136,7 @@ impl Profile {
     }
 }
 
+#[cfg(unix)]
 impl Profile {
     /// Whether `pid` is a Chrome running this profile that its server abandoned: it was
     /// re-parented to launchd/init (parent pid 1) when its parent process died.
@@ -138,6 +156,7 @@ impl Profile {
 }
 
 /// SIGTERM, then SIGKILL if the process is still there after a few seconds.
+#[cfg(unix)]
 fn terminate(pid: u32) {
     let signal = |sig: &str| {
         std::process::Command::new("kill")

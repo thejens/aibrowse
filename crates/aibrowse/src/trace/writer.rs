@@ -5,9 +5,10 @@
 //! call), `screens/<seq>.jpg` and `outlines/<seq>.txt`. Traces hold page content and
 //! screenshots of the user's accounts, so directories are created 0700 and files 0600.
 
-use std::fs::{self, DirBuilder, File, OpenOptions};
+use std::fs::{self, File, OpenOptions};
+
+use crate::private_fs::{Private, private_dir};
 use std::io::Write;
-use std::os::unix::fs::{DirBuilderExt, OpenOptionsExt, PermissionsExt};
 use std::path::{Path, PathBuf};
 use std::sync::mpsc::{Receiver, Sender, SyncSender, channel};
 use std::time::{Duration, SystemTime};
@@ -133,7 +134,7 @@ impl Writer {
         let events = OpenOptions::new()
             .create(true)
             .append(true)
-            .mode(0o600)
+            .private()
             .open(dir.join("events.jsonl"))?;
         tracing::info!(dir = %dir.display(), "recording a trace");
         Ok(Open {
@@ -159,19 +160,13 @@ fn safe_name(profile: &str) -> String {
     }
 }
 
-/// Creates `dir` (and parents) readable by the user only, and tightens it if it existed.
-fn private_dir(dir: &Path) -> std::io::Result<()> {
-    DirBuilder::new().recursive(true).mode(0o700).create(dir)?;
-    fs::set_permissions(dir, fs::Permissions::from_mode(0o700))
-}
-
 /// Writes a file only the user can read.
 pub fn write_private(path: &Path, bytes: &[u8]) -> std::io::Result<()> {
     OpenOptions::new()
         .create(true)
         .write(true)
         .truncate(true)
-        .mode(0o600)
+        .private()
         .open(path)?
         .write_all(bytes)
 }
@@ -259,6 +254,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(unix)]
     fn files_are_private_and_events_reference_artifacts() {
         let root = tempfile::tempdir().unwrap();
         let mut writer = Writer {
@@ -282,6 +278,7 @@ mod tests {
             "{line}"
         );
         assert!(line.contains(r#""outline":"outlines/0007.txt""#), "{line}");
+        use std::os::unix::fs::PermissionsExt;
         let mode = |p: &Path| fs::metadata(p).unwrap().permissions().mode() & 0o777;
         assert_eq!(mode(&dir.join("screens/0007.jpg")), 0o600);
         assert_eq!(mode(&dir.join("events.jsonl")), 0o600);
