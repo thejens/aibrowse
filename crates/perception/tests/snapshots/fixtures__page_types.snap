@@ -1,0 +1,10 @@
+---
+source: crates/perception/tests/fixtures.rs
+expression: "summary.join(\"\\n\")"
+---
+github-login: page: login (password field, button "Sign in"); auth: only the user can complete this; request_handoff if they are present, and never ask for credentials or codes in chat
+hn-front: page: listing (92 items); auth: signed out ("login" is offered)
+synthetic-signup: page: signup (new-password field); auth: only the user can complete this; request_handoff if they are present, and never ask for credentials or codes in chat
+synthetic-spa: page: -; auth: -
+todomvc-react: page: -; auth: -
+wikipedia-article: page: article (heading "Web browser", ~9k chars of text); auth: signed out ("Log in" is offered)

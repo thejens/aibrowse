@@ -1,0 +1,165 @@
+{
+  "about": "Fresh-site eval: goals on sites the navigator was never tuned on (retail, travel, governments, developer docs, media), to find new kinds of failure rather than to score the known ones. Each case starts at its site's home page. A run succeeds when the navigator reports Reached and the final URL or title contains one of the keywords (and none of `avoid`). When the navigator hands back for text, the eval types the case's `query` and Enter, as the calling agent would, up to twice. Run with `aibrowse eval navigator --suite evals/fresh.json`.",
+  "cases": [
+    {
+      "site": "https://www.ikea.com/us/en/",
+      "name": "ikea_returns",
+      "goal": "IKEA's return policy",
+      "expect": ["return"],
+      "avoid": ["search"],
+      "query": "return policy"
+    },
+    {
+      "site": "https://www.apple.com",
+      "name": "apple_check_coverage",
+      "goal": "Apple's page for checking the warranty coverage of a device",
+      "expect": ["checkcoverage", "coverage"],
+      "avoid": ["search"],
+      "query": "check coverage"
+    },
+    {
+      "site": "https://www.nasa.gov",
+      "name": "nasa_artemis",
+      "goal": "NASA's page about the Artemis program",
+      "expect": ["artemis"],
+      "avoid": ["search", "?s="],
+      "query": "artemis"
+    },
+    {
+      "site": "https://www.amtrak.com",
+      "name": "amtrak_baggage",
+      "goal": "Amtrak's baggage policy",
+      "expect": ["baggage", "luggage"],
+      "avoid": ["search"],
+      "query": "baggage policy"
+    },
+    {
+      "site": "https://www.who.int",
+      "name": "who_malaria",
+      "goal": "the WHO fact sheet on malaria",
+      "expect": ["malaria"],
+      "avoid": ["search"],
+      "query": "malaria fact sheet"
+    },
+    {
+      "site": "https://docs.python.org/3/",
+      "name": "python_pathlib",
+      "goal": "the Python documentation for the pathlib module",
+      "expect": ["pathlib"],
+      "avoid": ["search"],
+      "query": "pathlib"
+    },
+    {
+      "site": "https://www.postgresql.org",
+      "name": "postgres_create_index",
+      "goal": "the PostgreSQL documentation page for the CREATE INDEX command",
+      "expect": ["sql-createindex", "CREATE INDEX"],
+      "avoid": ["search"],
+      "query": "create index"
+    },
+    {
+      "site": "https://www.usps.com",
+      "name": "usps_zip_lookup",
+      "goal": "the USPS tool to look up a ZIP code",
+      "expect": ["zip"],
+      "avoid": [],
+      "query": "zip code lookup"
+    },
+    {
+      "site": "https://www.lufthansa.com",
+      "name": "lufthansa_baggage",
+      "goal": "Lufthansa's information on checked baggage allowance",
+      "expect": ["baggage", "gepaeck"],
+      "avoid": ["search"],
+      "query": "baggage allowance"
+    },
+    {
+      "site": "https://www.bahn.de",
+      "name": "bahn_passenger_rights",
+      "goal": "Deutsche Bahn's page on passenger rights and compensation for delayed trains",
+      "expect": ["fahrgastrechte", "passenger-rights", "passenger rights"],
+      "avoid": ["suche", "search"],
+      "query": "Fahrgastrechte"
+    },
+    {
+      "site": "https://www.canada.ca/en.html",
+      "name": "canada_passport",
+      "goal": "the Government of Canada page on how to apply for an adult passport",
+      "expect": ["passport"],
+      "avoid": ["search"],
+      "query": "apply adult passport"
+    },
+    {
+      "site": "https://www.ato.gov.au",
+      "name": "ato_tfn",
+      "goal": "the Australian Taxation Office page on how to apply for a tax file number",
+      "expect": ["tax-file-number", "tfn", "tax file number"],
+      "avoid": ["search"],
+      "query": "apply for a TFN"
+    },
+    {
+      "site": "https://www.netflix.com",
+      "name": "netflix_cancel",
+      "goal": "the Netflix help article on how to cancel a Netflix membership",
+      "expect": ["cancel"],
+      "avoid": ["search"],
+      "query": "cancel netflix"
+    },
+    {
+      "site": "https://www.redditinc.com",
+      "name": "reddit_content_policy",
+      "goal": "Reddit's content policy (now called the Reddit Rules)",
+      "expect": ["content-policy", "contentpolicy", "content policy", "reddit-rules"],
+      "avoid": ["search"],
+      "query": "content policy"
+    },
+    {
+      "site": "https://www2.hm.com/en_us/index.html",
+      "name": "hm_returns",
+      "goal": "H&M's information on how to return an online order",
+      "expect": ["return"],
+      "avoid": ["search"],
+      "query": "returns"
+    },
+    {
+      "site": "https://developer.android.com",
+      "name": "android_runtime_permissions",
+      "goal": "the Android developer guide on requesting runtime permissions",
+      "expect": ["requesting", "request-permission", "runtime"],
+      "avoid": ["search"],
+      "query": "request runtime permissions"
+    },
+    {
+      "site": "https://docs.npmjs.com",
+      "name": "npm_package_json",
+      "goal": "the npm documentation page describing the package.json file",
+      "expect": ["package-json", "package.json"],
+      "avoid": ["search"],
+      "query": "package.json"
+    },
+    {
+      "site": "https://www.kernel.org",
+      "name": "kernel_longterm",
+      "goal": "the list of longterm (LTS) Linux kernel releases and their end of life dates",
+      "expect": ["releases", "longterm"],
+      "avoid": [],
+      "query": "longterm releases"
+    },
+    {
+      "site": "https://www.bbc.co.uk",
+      "name": "bbc_complaints",
+      "goal": "the BBC page on how to make a complaint",
+      "expect": ["complaint"],
+      "avoid": ["search"],
+      "query": "make a complaint"
+    },
+    {
+      "site": "https://www.sbb.ch/en",
+      "name": "sbb_dogs",
+      "goal": "SBB's information on travelling with a dog on Swiss trains",
+      "expect": ["dog", "hund"],
+      "avoid": ["search", "suche"],
+      "query": "travelling with dogs"
+    }
+  ]
+}

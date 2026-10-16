@@ -1,0 +1,13 @@
+---
+source: crates/perception/tests/fixtures.rs
+expression: "fuse(raw(fixture), Detail::Interactive, Some(region)).render()"
+---
+# Create your account · Example
+url: https://example.com/signup
+viewport: 1440x757, whole page visible
+note: no region matches "dialog"; regions here: banner, main, complementary "Help", contentinfo
+page: signup (new-password field)
+auth: only the user can complete this; request_handoff if they are present, and never ask for credentials or codes in chat
+region: dialog (only this part of the page, in full)
+
+(no visible content)

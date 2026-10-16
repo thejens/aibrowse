@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>aibrowse</title>
+<style>
+  :root { --bg: #0f1115; --panel: #181b21; --text: #e8eaed; --muted: #9aa0a6; --accent: #4f8cff; --done: #2fb36d; --border: #2a2f37; --alert: #f2b84b; }
+  @media (prefers-color-scheme: light) { :root { --bg: #f4f5f7; --panel: #ffffff; --text: #1d2026; --muted: #5f6368; --border: #dde1e6; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; height: 100vh; display: flex; flex-direction: column; background: var(--bg); color: var(--text); font: 14px/1.4 -apple-system, system-ui, sans-serif; }
+  header { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; padding: 10px 16px; background: var(--panel); border-bottom: 1px solid var(--border); }
+  header.needed { border-bottom: 2px solid var(--alert); }
+  .reason { flex: 1 1 260px; white-space: pre-wrap; }
+  .reason small { display: block; color: var(--muted); }
+  button { font: inherit; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text); cursor: pointer; }
+  button.done { background: var(--done); border-color: var(--done); color: #fff; font-weight: 600; }
+  .typebox { display: flex; gap: 6px; flex: 1 1 260px; }
+  .typebox input { flex: 1; min-width: 0; font: inherit; padding: 7px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); }
+  main { flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 12px; }
+  canvas { max-width: 100%; max-height: 100%; box-shadow: 0 2px 16px rgba(0,0,0,.35); outline: none; cursor: default; touch-action: none; }
+  canvas:not(.live) { display: none; }
+  canvas.readonly { cursor: not-allowed; }
+  canvas:focus:not(.readonly) { box-shadow: 0 0 0 2px var(--accent), 0 2px 16px rgba(0,0,0,.35); }
+  .waiting { color: var(--muted); font-size: 16px; }
+  .status { color: var(--muted); font-size: 12px; }
+  .recording { color: var(--muted); font-size: 12px; cursor: help; }
+  .recording::before { content: '●'; color: #e5534b; margin-right: 4px; }
+  .hidden { display: none !important; }
+  /* The code relay: a box for the code, no page. */
+  body.code main, body.code #enter, body.code #typebox button[type=submit] { display: none; }
+  body.code header { flex-direction: column; align-items: stretch; gap: 14px; padding: 24px 16px; font-size: 18px; }
+  body.code .typebox input { font-size: 24px; letter-spacing: 0.15em; padding: 12px; text-align: center; }
+  .overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; text-align: center; padding: 24px; background: var(--bg); font-size: 18px; }
+  /* After handing back: the agent's browser stays in view behind the message. */
+  .overlay.see-through { background: color-mix(in srgb, var(--bg) 55%, transparent); pointer-events: none; }
+  .overlay.see-through span { max-width: 32em; padding: 16px 22px; border-radius: 12px; background: color-mix(in srgb, var(--panel) 88%, transparent); box-shadow: 0 2px 16px rgba(0,0,0,.35); }
+</style>
+</head>
+<body>
+<header id="header">
+  <div class="reason"><span id="reason">{{REASON}}</span><small id="hint">{{HINT}}</small></div>
+  <form class="typebox" id="typebox" autocomplete="off" style="{{TYPEBOX_STYLE}}">
+    <input id="text" placeholder="Type or paste text (e.g. a code) into the focused field" aria-label="Text to type">
+    <button type="submit">Type</button>
+    <button type="button" id="enter">Enter</button>
+  </form>
+  <span class="recording {{RECORDING}}" id="recording" title="This profile learns how you move the pointer, click, scroll and type, so the agent's input resembles yours. Only timing and distance statistics are kept: never which keys you press, what you type, or where you click. Set &quot;kinematics&quot;: &quot;off&quot; in the profile's policy.json to stop.">Learning your input rhythm</span>
+  <span class="status" id="status">connecting…</span>
+  <button id="reload" title="Reload the page in the agent's browser (Cmd/Ctrl+R, F5)">Reload</button>
+  <button id="takeover" class="hidden" title="Pause the agent and use the browser yourself">Take over</button>
+  <button id="cancel">{{CANCEL}}</button>
+  <button class="done" id="done">{{DONE}}</button>
+</header>
+<main><span class="waiting" id="waiting">Connecting to the agent's browser…</span><canvas id="screen" tabindex="0" aria-label="Live view of the agent's browser"></canvas></main>
+<div class="overlay" id="overlay"></div>
+<script>
+(() => {
+  // "handoff": a one-off link for one request. "watch": the persistent view, read-only
+  // except while the agent needs the user.
+  const MODE = '{{MODE}}';
+  const KIND = '{{KIND}}';
+  const LABELS = {
+    takeover: { done: 'Done', cancel: 'Cancel', typing: true,
+                hint: "You're controlling the agent's browser. It notices when you're through; press Done if it doesn't." },
+    approval: { done: 'Approve', cancel: 'Deny', typing: false,
+                hint: 'The agent is waiting for your decision. Nothing happens unless you approve.' },
+    code: { done: 'Send code', cancel: 'Cancel', typing: true,
+            hint: 'Type the code you received. It is entered on the page for you.' },
+    yours: { done: 'Hand back to the agent', cancel: null, typing: true,
+             hint: 'The agent is paused. It will get the pages you visited and what you clicked (never what you typed).' },
+  };
+  const $ = (id) => document.getElementById(id);
+  const canvas = $('screen'), ctx = canvas.getContext('2d');
+  const status = $('status'), overlay = $('overlay'), waiting = $('waiting');
+  let page = { w: 0, h: 0 };
+  let ws, finished = false;
+  let interactive = MODE === 'handoff';
+
+  const send = (msg) => { if (ws && ws.readyState === 1) ws.send(JSON.stringify(msg)); };
+  const input = (msg) => { if (interactive) send(msg); };
+  const finish = (text) => {
+    finished = true;
+    overlay.classList.remove('see-through');
+    overlay.textContent = text;
+    overlay.style.display = 'flex';
+  };
+  // Handed back: the page goes on showing the agent at work, read-only, behind the
+  // message, until the server ends the picture.
+  let afterwards = false;
+  const BACK = KIND === 'approval' ? 'Approved: the agent is going ahead.' : 'Thanks. The agent has taken over again.';
+  const handedBack = (text) => {
+    afterwards = finished = true;
+    interactive = false;
+    canvas.classList.add('readonly');
+    [$('done'), $('cancel'), $('typebox'), $('recording'), $('takeover')].forEach((el) => show(el, false));
+    $('header').classList.remove('needed');
+    $('hint').textContent = "Read-only: you're watching the agent work.";
+    status.textContent = 'watching';
+    document.title = 'aibrowse: the agent has it';
+    const box = document.createElement('span');
+    box.textContent = text;
+    overlay.replaceChildren(box);
+    overlay.classList.add('see-through');
+    overlay.style.display = 'flex';
+  };
+  const show = (el, on) => el.classList.toggle('hidden', !on);
+
+  // This view was reloaded (its address bar, its own button): the agent's page is
+  // reloaded too, once, as soon as the user has control of it.
+  let reloadPending = performance.getEntriesByType('navigation')[0]?.type === 'reload';
+  const reloadIfAsked = () => {
+    if (!reloadPending || !interactive || !ws || ws.readyState !== 1) return;
+    reloadPending = false;
+    input({ t: 'reload' });
+  };
+
+  // Switch between watching and controlling (watch view only).
+  function setHandoff(handoff) {
+    interactive = !!handoff;
+    reloadIfAsked();
+    canvas.classList.toggle('readonly', !interactive);
+    $('header').classList.toggle('needed', interactive);
+    if (!handoff) {
+      $('reason').textContent = "Watching the agent's browser";
+      $('hint').textContent = 'Read-only. If the agent needs you, this page turns into the controls.';
+      [$('done'), $('cancel'), $('typebox'), $('recording')].forEach((el) => show(el, false));
+      show($('takeover'), canvas.classList.contains('live'));
+      document.title = 'aibrowse: watching';
+      return;
+    }
+    show($('takeover'), false);
+    const labels = handoff.by_user ? LABELS.yours : (LABELS[handoff.kind] || LABELS.takeover);
+    $('reason').textContent = handoff.reason;
+    $('hint').textContent = labels.hint;
+    $('done').textContent = labels.done;
+    $('cancel').textContent = labels.cancel;
+    show($('done'), true); show($('cancel'), labels.cancel !== null);
+    show($('recording'), !!handoff.recording);
+    $('typebox').style.display = '';
+    show($('typebox'), labels.typing);
+    document.title = 'aibrowse needs you';
+    canvas.focus();
+    codeLayout(handoff.kind === 'code' && !handoff.by_user);
+  }
+
+  // The code relay shows a single box, focused and ready for an SMS code to autofill.
+  let codeMode = false;
+  function codeLayout(on) {
+    codeMode = on;
+    document.body.classList.toggle('code', on);
+    const box = $('text');
+    box.placeholder = on ? 'Code' : 'Type or paste text (e.g. a code) into the focused field';
+    if (on) {
+      box.setAttribute('autocomplete', 'one-time-code');
+      box.focus();
+    } else {
+      box.removeAttribute('autocomplete');
+    }
+  }
+  const sendCode = () => {
+    const code = $('text').value.trim();
+    if (!code) return;
+    input({ t: 'code', code });
+    $('text').value = '';
+    if (MODE === 'handoff') finish('Thanks. The code was entered; you can close this tab.');
+  };
+
+  // The picture's room in device pixels: frames are made no larger (a phone gets
+  // phone-sized frames). Sent while only watching too.
+  const sendView = () => {
+    const main = document.querySelector('main');
+    const dpr = window.devicePixelRatio || 1;
+    send({ t: 'view', w: Math.round(main.clientWidth * dpr), h: Math.round(main.clientHeight * dpr) });
+  };
+  let resized = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(resized);
+    resized = setTimeout(sendView, 300);
+  });
+
+  function connect() {
+    ws = new WebSocket(location.href.replace(/^http/, 'ws').replace(/\/?$/, '/ws'));
+    ws.binaryType = 'blob';
+    ws.onopen = () => { status.textContent = 'live'; canvas.focus(); reloadIfAsked(); sendView(); };
+    ws.onclose = async () => {
+      if (afterwards) {
+        status.textContent = 'ended';
+        overlay.firstChild.textContent += ' The live picture has ended.';
+      }
+      if (finished) return;
+      // A link whose request ended (resolved elsewhere, expired, or the agent's session
+      // closed) is gone for good: say so instead of retrying forever.
+      const alive = await fetch(location.href, { method: 'GET', cache: 'no-store' }).then((r) => r.ok, () => false);
+      if (!alive) {
+        finish('This request has ended. Nothing more is needed from you; you can close this tab.');
+        return;
+      }
+      status.textContent = 'disconnected, retrying…';
+      setTimeout(connect, 1000);
+    };
+    ws.onmessage = async (e) => {
+      if (typeof e.data === 'string') {
+        const msg = JSON.parse(e.data);
+        if (msg.t === 'size') page = { w: msg.w, h: msg.h };
+        if (msg.t === 'mode') setHandoff(msg.handoff);
+        if (msg.t === 'idle') {
+          canvas.classList.remove('live');
+          show($('takeover'), false);
+          waiting.textContent = "The agent's browser is closed. It shows up here when the agent starts browsing.";
+          show(waiting, true);
+        }
+        if (msg.t === 'resolved') {
+          if (msg.watching) {
+            handedBack(`${BACK} You can watch it work here for ${Math.round(msg.watching / 60)} minutes, or close this tab.`);
+            return;
+          }
+          finish(msg.status === 'done'
+            ? 'All set: the agent has taken over again. You can close this tab.'
+            : 'This request has ended. Nothing more is needed from you; you can close this tab.');
+          ws.close();
+        }
+        return;
+      }
+      const bitmap = await createImageBitmap(e.data);
+      if (canvas.width !== bitmap.width || canvas.height !== bitmap.height) {
+        canvas.width = bitmap.width; canvas.height = bitmap.height;
+      }
+      ctx.drawImage(bitmap, 0, 0);
+      if (!canvas.classList.contains('live')) {
+        canvas.classList.add('live');
+        show(waiting, false);
+        if (MODE === 'watch' && !interactive) show($('takeover'), true);
+      }
+    };
+  }
+
+  // Input messages carry the event's own timestamp (ts) and pointer type (pt): when the
+  // profile records kinematics, timing must come from the user's machine, not from when
+  // messages happen to cross the network. The Enter button sends no ts: it isn't typing.
+  // Canvas pixels → page CSS pixels.
+  const point = (e) => {
+    const r = canvas.getBoundingClientRect();
+    return { x: (e.clientX - r.left) / r.width * page.w, y: (e.clientY - r.top) / r.height * page.h };
+  };
+  const mods = (e) => (e.altKey ? 1 : 0) | (e.ctrlKey ? 2 : 0) | (e.metaKey ? 4 : 0) | (e.shiftKey ? 8 : 0);
+  const BUTTONS = ['left', 'middle', 'right'];
+  const mouse = (kind) => (e) => {
+    if (!interactive) return;
+    e.preventDefault();
+    if (kind === 'mousePressed') canvas.focus();
+    const p = point(e);
+    input({ t: 'mouse', kind, x: p.x, y: p.y, button: kind === 'mouseMoved' ? 'none' : (BUTTONS[e.button] || 'none'),
+            buttons: e.buttons, clickCount: kind === 'mouseMoved' ? 0 : Math.max(1, e.detail), modifiers: mods(e),
+            ts: e.timeStamp, pt: e.pointerType });
+  };
+  canvas.addEventListener('pointerdown', mouse('mousePressed'));
+  canvas.addEventListener('pointerup', mouse('mouseReleased'));
+  let moveQueued = null;
+  canvas.addEventListener('pointermove', (e) => {
+    if (!interactive) return;
+    if (!moveQueued) requestAnimationFrame(() => { mouse('mouseMoved')(moveQueued); moveQueued = null; });
+    moveQueued = e;
+  });
+  canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+  canvas.addEventListener('wheel', (e) => {
+    if (!interactive) return;
+    e.preventDefault();
+    const p = point(e);
+    input({ t: 'wheel', x: p.x, y: p.y, dx: e.deltaX, dy: e.deltaY, ts: e.timeStamp });
+  }, { passive: false });
+  // Reloading means the agent's page: the shortcuts reload it rather than this view,
+  // and a reload of this view (its address bar, its own button) reloads it too.
+  document.addEventListener('keydown', (e) => {
+    const reload = e.key === 'F5' || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'r');
+    if (!reload || !interactive) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    if (e.type === 'keydown' && !e.repeat) input({ t: 'reload' });
+  }, true);
+  const key = (kind) => (e) => {
+    if (!interactive || document.activeElement !== canvas) return;
+    // Let the local browser keep its own paste so we can forward the text.
+    if (kind === 'keyDown' && (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'v') return;
+    e.preventDefault();
+    input({ t: 'key', kind, key: e.key, code: e.code, keyCode: e.keyCode, modifiers: mods(e), ts: e.timeStamp });
+  };
+  document.addEventListener('keydown', key('keyDown'));
+  document.addEventListener('keyup', key('keyUp'));
+  document.addEventListener('paste', (e) => {
+    if (!interactive || document.activeElement !== canvas) return;
+    e.preventDefault();
+    input({ t: 'text', text: e.clipboardData.getData('text') });
+  });
+
+  const text = $('text');
+  $('typebox').addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (codeMode) return sendCode();
+    if (text.value) input({ t: 'text', text: text.value });
+    text.value = '';
+  });
+  $('enter').addEventListener('click', () => {
+    input({ t: 'key', kind: 'keyDown', key: 'Enter', code: 'Enter', keyCode: 13, modifiers: 0 });
+    input({ t: 'key', kind: 'keyUp', key: 'Enter', code: 'Enter', keyCode: 13, modifiers: 0 });
+  });
+  // On a one-off link, answering ends the page; in the watch view the server switches
+  // the page back to watching.
+  $('done').addEventListener('click', () => {
+    if (codeMode) return sendCode();
+    input({ t: 'done' });
+    if (MODE === 'handoff') handedBack(`${BACK} You can watch it work here, or close this tab.`);
+  });
+  $('cancel').addEventListener('click', () => {
+    input({ t: 'cancel' });
+    if (MODE === 'handoff') finish('Got it. The agent will not go ahead; you can close this tab.');
+  });
+  $('takeover').addEventListener('click', () => send({ t: 'takeover' }));
+  $('reload').addEventListener('click', () => { input({ t: 'reload' }); canvas.focus(); });
+  if (MODE === 'watch') setHandoff(null);
+  if (MODE === 'handoff' && KIND === 'code') codeLayout(true);
+  connect();
+})();
+</script>
+</body>
+</html>

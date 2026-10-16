@@ -1,0 +1,126 @@
+{
+  "about": "Fact goals: a number or date that sits in a page's text, often under a tab, a toggle or a heading the outline shows without it. Each case starts at its site's home page. A run succeeds when the navigator reports Reached, the final URL or title contains one of the keywords, and the page's text shows one of the `answer` strings. Answers change over time (prices) and with where the eval runs (Stripe shows local fees); update them when a site does. Run with `aibrowse eval navigator --suite evals/facts.json`.",
+  "cases": [
+    {
+      "site": "https://github.com",
+      "name": "github_copilot_business_price",
+      "goal": "the price per user per month of GitHub Copilot Business",
+      "expect": [
+        "copilot"
+      ],
+      "answer": [
+        "$19",
+        "$ 19",
+        "19 USD"
+      ]
+    },
+    {
+      "site": "https://stripe.com",
+      "name": "stripe_card_fee",
+      "goal": "Stripe's standard fee for card payments",
+      "expect": [
+        "pricing"
+      ],
+      "answer": [
+        "2.9%",
+        "1.5%",
+        "1,5 %",
+        "2.9 %"
+      ]
+    },
+    {
+      "site": "https://www.python.org",
+      "name": "python_313_release_date",
+      "goal": "the release date of Python 3.13.0",
+      "expect": [
+        "3.13",
+        "313"
+      ],
+      "answer": [
+        "Oct. 7, 2024",
+        "Oct 7, 2024",
+        "2024-10-07",
+        "October 7, 2024"
+      ]
+    },
+    {
+      "site": "https://en.wikipedia.org",
+      "name": "wikipedia_everest_height",
+      "goal": "the height of Mount Everest in metres",
+      "expect": [
+        "everest"
+      ],
+      "answer": [
+        "8,848.86",
+        "8,849",
+        "8848.86",
+        "8,848"
+      ],
+      "query": "Mount Everest"
+    },
+    {
+      "site": "https://www.rust-lang.org",
+      "name": "rust_1_0_date",
+      "goal": "the date Rust 1.0 was released",
+      "expect": [
+        "1.0",
+        "rust"
+      ],
+      "answer": [
+        "May 15, 2015",
+        "2015-05-15",
+        "15 May 2015"
+      ]
+    },
+    {
+      "site": "https://www.dropbox.com",
+      "name": "dropbox_plus_storage",
+      "goal": "how much storage the Dropbox Plus plan includes",
+      "expect": [
+        "plans",
+        "plus",
+        "pricing"
+      ],
+      "answer": [
+        "2 TB",
+        "2TB",
+        "2,000 GB"
+      ]
+    },
+    {
+      "site": "https://arxiv.org/abs/1706.03762",
+      "name": "arxiv_transformer_bleu",
+      "goal": "the BLEU score the big Transformer model reached on WMT 2014 English-to-German, in the paper's full text",
+      "expect": [
+        "1706.03762"
+      ],
+      "answer": [
+        "28.4"
+      ]
+    },
+    {
+      "site": "https://crates.io",
+      "name": "crates_serde_json_license",
+      "goal": "the license of the serde_json crate",
+      "expect": [
+        "serde_json"
+      ],
+      "answer": [
+        "MIT OR Apache-2.0",
+        "MIT/Apache-2.0",
+        "Apache License, Version 2.0 or MIT"
+      ]
+    },
+    {
+      "site": "https://developer.mozilla.org",
+      "name": "mdn_has_firefox",
+      "goal": "the first Firefox version that supports the CSS :has() selector",
+      "expect": [
+        ":has"
+      ],
+      "answer": [
+        "121"
+      ]
+    }
+  ]
+}

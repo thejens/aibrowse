@@ -1,0 +1,34 @@
+---
+source: crates/perception/tests/fixtures.rs
+expression: "fuse(&raw, Detail::Full, None).render()"
+---
+# Create your account · Example
+url: https://example.com/signup
+viewport: 1440x757, whole page visible
+page: signup (new-password field)
+auth: only the user can complete this; request_handoff if they are present, and never ask for credentials or codes in chat
+regions: banner, main, complementary "Help", contentinfo
+
+- banner
+  - link "Example" [e23] -> /
+  - navigation "Primary"
+    - link "Pricing" [e28] -> /pricing
+    - text: 
+    - link "Docs" [e31] -> /docs
+    - text: 
+    - link "Sign in" [e34] -> /login
+- main
+  - heading "Create your account" level=1
+    - text: Create your account
+  - form "Create account" (signup) → fill(email: [e48] value="not-an-email" required invalid, new-password: "Password" [e53] required, select: "Country" [e3] value="Sweden" collapsed options: Sweden|Norway|Denmark|Finland|+2, radio(plan): "Free" [e80] checked | "Pro" [e84], checkbox: "I accept the terms" [e89] invalid) submit: button "Create account" [e95]
+    - text: Email
+    - text: Password
+    - text: Country
+    - text: Plan
+    - link "Read the terms" [e92] -> /terms
+- complementary "Help"
+  - link "Trouble signing up?" [e102] -> /help/signup
+- contentinfo
+  - link "Privacy" [e108] -> /privacy
+  - text: 
+  - link "Contact" [e111] -> /contact

@@ -1,0 +1,38 @@
+{
+  "about": "A4 navigator eval: every site × every goal, starting from the site's home page. A run succeeds when the navigator reports Reached and the final URL or title contains one of the goal's keywords. Run with `aibrowse eval navigator` (needs a Jev key).",
+  "goals": {
+    "terms": {
+      "goal": "the terms of service",
+      "expect": ["terms", "legal", "tos", "conditions", "user-agreement", "agreement"]
+    },
+    "privacy": {
+      "goal": "the privacy policy",
+      "expect": ["privacy"]
+    },
+    "careers": {
+      "goal": "the careers page with open jobs",
+      "expect": ["careers", "jobs", "join", "work-with-us", "hiring", "career"]
+    },
+    "help": {
+      "goal": "the help center or customer support",
+      "expect": ["help", "support", "contact", "docs", "faq", "customer-service", "knowledge", "/kb"]
+    }
+  },
+  "sites": [
+    "https://github.com",
+    "https://stripe.com",
+    "https://www.notion.com",
+    "https://www.figma.com",
+    "https://www.dropbox.com",
+    "https://www.airbnb.com",
+    "https://www.spotify.com",
+    "https://slack.com",
+    "https://zoom.us",
+    "https://www.shopify.com",
+    "https://www.atlassian.com",
+    "https://www.mozilla.org",
+    "https://www.cloudflare.com",
+    "https://linear.app",
+    "https://vercel.com"
+  ]
+}

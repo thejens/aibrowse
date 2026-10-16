@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>aibrowse trace</title>
+<style>
+:root {
+  --bg: #f7f7f5; --panel: #ffffff; --text: #1d1d1b; --muted: #6b6b66; --line: #e2e2dd;
+  --accent: #2f6fd6; --ok: #2e8b57; --bad: #c0392b; --code: #f1f1ed; --bar: #c9d8f2;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161615; --panel: #1f1f1d; --text: #e8e8e3; --muted: #9a9a93; --line: #33332f;
+    --accent: #7aa7f0; --ok: #5fbf8a; --bad: #ef7a6b; --code: #2a2a27; --bar: #2f4670;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+header { position: sticky; top: 0; z-index: 2; background: var(--panel);
+  border-bottom: 1px solid var(--line); padding: 12px 16px; }
+header h1 { margin: 0 0 4px; font-size: 16px; }
+header .meta { color: var(--muted); font-size: 13px; }
+.controls { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; align-items: center; }
+.controls input[type=search] { flex: 1 1 240px; padding: 6px 8px; border: 1px solid var(--line);
+  border-radius: 6px; background: var(--bg); color: var(--text); }
+main { max-width: 1100px; margin: 0 auto; padding: 16px; }
+.step { display: grid; grid-template-columns: 200px 1fr; gap: 14px; background: var(--panel);
+  border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin-bottom: 10px; }
+.step.error { border-left: 4px solid var(--bad); }
+.thumb { width: 200px; }
+.thumb img { width: 100%; border: 1px solid var(--line); border-radius: 4px; cursor: zoom-in; display: block; }
+.thumb .none { color: var(--muted); font-size: 12px; padding: 8px 0; }
+.head { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.seq { color: var(--muted); font-variant-numeric: tabular-nums; }
+.tool { font-weight: 600; }
+.summary { color: var(--muted); overflow-wrap: anywhere; }
+.badge { font-size: 12px; padding: 0 6px; border-radius: 10px; border: 1px solid currentColor; }
+.badge.ok { color: var(--ok); } .badge.bad { color: var(--bad); }
+.timing { display: flex; align-items: center; gap: 8px; margin: 4px 0; font-size: 12px; color: var(--muted); }
+.timing .bar { height: 6px; background: var(--bar); border-radius: 3px; min-width: 2px; }
+.page { font-size: 13px; overflow-wrap: anywhere; }
+.page a { color: var(--accent); }
+.note { font-size: 13px; color: var(--muted); }
+details { margin-top: 6px; }
+summary { cursor: pointer; color: var(--accent); font-size: 13px; }
+pre { background: var(--code); padding: 8px; border-radius: 6px; overflow: auto; max-height: 420px;
+  white-space: pre-wrap; overflow-wrap: anywhere; font: 12px/1.4 ui-monospace, Menlo, monospace; margin: 6px 0 0; }
+table { border-collapse: collapse; width: 100%; font-size: 12px; margin-top: 6px; }
+td, th { border-bottom: 1px solid var(--line); padding: 3px 6px; text-align: left; vertical-align: top;
+  overflow-wrap: anywhere; }
+dialog { border: none; padding: 0; background: transparent; max-width: 96vw; }
+dialog img { max-width: 96vw; max-height: 92vh; display: block; }
+dialog::backdrop { background: rgba(0,0,0,.75); }
+@media (max-width: 640px) {
+  .step { grid-template-columns: 1fr; }
+  .thumb { width: 100%; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1 id="title">aibrowse trace</h1>
+  <div class="meta" id="meta"></div>
+  <div class="controls">
+    <input type="search" id="filter" placeholder="Filter by tool, URL, text…">
+    <label><input type="checkbox" id="errors"> errors only</label>
+    <label><input type="checkbox" id="expand"> expand all</label>
+  </div>
+</header>
+<main id="steps"></main>
+<dialog id="zoom"><img alt="screenshot"></dialog>
+<script type="application/json" id="trace-data">__TRACE_DATA__</script>
+<script>
+// Everything shown comes from web pages and is untrusted: it is only ever set as text,
+// never parsed as HTML.
+const trace = JSON.parse(document.getElementById('trace-data').textContent);
+const events = trace.events;
+const el = (tag, props = {}, ...children) => {
+  const node = Object.assign(document.createElement(tag), props);
+  for (const child of children) if (child != null) node.append(child);
+  return node;
+};
+const fmtMs = (ms) => ms >= 1000 ? (ms / 1000).toFixed(1) + 's' : ms + 'ms';
+const json = (value) => JSON.stringify(value, null, 2);
+const maxMs = Math.max(1, ...events.map((e) => e.duration_ms || 0));
+const total = events.reduce((sum, e) => sum + (e.duration_ms || 0), 0);
+
+document.getElementById('title').textContent = 'aibrowse trace — ' + trace.name;
+document.title = 'Trace ' + trace.name;
+document.getElementById('meta').textContent =
+  `${events.length} calls · ${fmtMs(total)} in tools · ${events.filter((e) => !e.ok).length} errors` +
+  (events.length ? ` · started ${events[0].time}` : '');
+
+function summarize(e) {
+  const a = e.args || {};
+  const parts = [a.action, a.ref && '[' + a.ref + ']', a.url, a.goal && '“' + a.goal + '”',
+    a.text, a.key, a.endpoint, a.expression];
+  return parts.filter(Boolean).map(String).join(' ').slice(0, 200);
+}
+
+function section(label, body) {
+  const d = el('details', {}, el('summary', { textContent: label }), body);
+  d.className = 'section';
+  return d;
+}
+
+function pre(text) { return el('pre', { textContent: text }); }
+
+function table(head, rows) {
+  const t = el('table');
+  t.append(el('tr', {}, ...head.map((h) => el('th', { textContent: h }))));
+  for (const row of rows) t.append(el('tr', {}, ...row.map((c) => el('td', { textContent: c ?? '' }))));
+  return t;
+}
+
+function render(e) {
+  const card = el('article', { className: 'step' + (e.ok ? '' : ' error') });
+  card.dataset.search = [e.tool, e.url, e.title, summarize(e), e.result].join(' ').toLowerCase();
+  card.dataset.ok = e.ok ? '1' : '0';
+
+  const thumb = el('div', { className: 'thumb' });
+  if (e.screenshot) {
+    const img = el('img', { src: e.screenshot, loading: 'lazy', alt: 'page after call ' + e.seq });
+    img.addEventListener('click', () => {
+      const zoom = document.getElementById('zoom');
+      zoom.querySelector('img').src = e.screenshot;
+      zoom.showModal();
+    });
+    thumb.append(img);
+  } else {
+    thumb.append(el('div', { className: 'none', textContent: e.capture_skipped ? 'not captured: ' + e.capture_skipped : 'no screenshot' }));
+  }
+
+  const body = el('div');
+  body.append(el('div', { className: 'head' },
+    el('span', { className: 'seq', textContent: '#' + e.seq }),
+    el('span', { className: 'tool', textContent: e.tool }),
+    el('span', { className: 'badge ' + (e.ok ? 'ok' : 'bad'), textContent: e.ok ? 'ok' : 'error' }),
+    el('span', { className: 'summary', textContent: summarize(e) })));
+  const bar = el('span', { className: 'bar' });
+  bar.style.width = Math.max(2, 240 * (e.duration_ms || 0) / maxMs) + 'px';
+  body.append(el('div', { className: 'timing' }, bar,
+    el('span', { textContent: fmtMs(e.duration_ms || 0) + ' · ' + e.time })));
+  if (e.url) {
+    // Only web URLs become links: a recorded javascript: or data: URL stays inert text.
+    const link = /^https?:\/\//i.test(e.url)
+      ? el('a', { href: e.url, textContent: e.url, target: '_blank', rel: 'noreferrer noopener' })
+      : e.url;
+    body.append(el('div', { className: 'page' }, (e.title ? e.title + ' — ' : ''), link));
+  }
+  for (const h of e.human || []) {
+    body.append(el('div', { className: 'note', textContent: `${h.kind} ${h.event}${h.id ? ' (' + h.id + ')' : ''}${h.detail ? ': ' + h.detail : ''}` }));
+  }
+  for (const a of e.actions || []) {
+    body.append(el('div', { className: 'note', textContent:
+      `${a.action}: ${a.navigated ? 'navigated to ' + a.url_after : 'done'} after ${fmtMs(a.elapsed_ms)}${a.settled ? '' : ' (not settled)'}` }));
+  }
+
+  body.append(section('Arguments', pre(json(e.args))));
+  body.append(section('Result' + (e.result_truncated ? ' (truncated)' : ''), pre(e.result || '')));
+  if (e.outline_text) body.append(section('Outline', pre(e.outline_text)));
+  if (e.network) {
+    const rows = e.network.requests.map((r) => [r.seq, r.method, r.status ?? r.error ?? '…', r.kind,
+      r.ms != null ? r.ms + 'ms' : '', r.url, r.endpoint]);
+    const label = `Network (${e.network.requests.length} requests${e.network.other ? ', ' + e.network.other + ' assets' : ''})`;
+    body.append(section(label, table(['#', 'method', 'status', 'kind', 'time', 'url', 'endpoint'], rows)));
+  }
+  for (const n of e.navigator || []) {
+    const wrap = el('div');
+    wrap.append(el('div', { className: 'note', textContent: `Goal “${n.goal}”: ${n.outcome}, ${n.steps.length} steps, ${fmtMs(n.elapsed_ms)}` }));
+    wrap.append(table(['step', 'confidence', 'on', 'error'],
+      n.steps.map((s) => [s.action, s.confidence.toFixed(2), s.url, s.error])));
+    wrap.append(table(['page', 'options', 'turn', 'best next'], n.decisions.map((d) => [d.url, d.candidates,
+      d.turn.map(([k, p]) => `${k} ${p.toFixed(2)}`).join(', '),
+      d.next.map(([k, p]) => `${k} ${p.toFixed(2)}`).join('; ')])));
+    body.append(section('Navigator decisions', wrap));
+  }
+  if (e.api && e.api.length) body.append(section('API requests', pre(json(e.api))));
+  if (e.actions && e.actions.length) body.append(section('Action results', pre(json(e.actions))));
+
+  card.append(thumb, body);
+  return card;
+}
+
+const list = document.getElementById('steps');
+for (const e of events) list.append(render(e));
+if (!events.length) list.append(el('p', { textContent: 'This trace has no events yet.' }));
+
+const filter = document.getElementById('filter');
+const errors = document.getElementById('errors');
+function apply() {
+  const needle = filter.value.trim().toLowerCase();
+  for (const card of list.querySelectorAll('.step')) {
+    const show = (!needle || card.dataset.search.includes(needle)) && (!errors.checked || card.dataset.ok === '0');
+    card.hidden = !show;
+  }
+}
+filter.addEventListener('input', apply);
+errors.addEventListener('change', apply);
+document.getElementById('expand').addEventListener('change', (ev) => {
+  for (const d of list.querySelectorAll('details')) d.open = ev.target.checked;
+});
+document.getElementById('zoom').addEventListener('click', (ev) => ev.currentTarget.close());
+</script>
+</body>
+</html>

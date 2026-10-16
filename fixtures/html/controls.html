@@ -1,0 +1,174 @@
+<!doctype html>
+<!-- Controls as widget libraries draw them, for crates/aibrowse/tests/controls_live.rs:
+     icon-only radios named by their label's title (Bootstrap's btn-check, as on
+     OpenStreetMap, with ids repeated in a hidden copy of the form), a date field whose
+     own overlay forwards clicks to its spinbuttons (bahn.de), a jQuery UI date picker
+     and range slider (set from its keys or by a drag), ARIA spinbuttons, and checkboxes shrunk to nothing behind
+     their labels (Zalando). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Controls</title>
+<style>
+  body { font: 16px system-ui, sans-serif; margin: 24px; }
+  section { margin: 16px 0; }
+  /* As on OpenStreetMap: the clipped radios all sit at the group's corner, under the
+     first label, so a click at a radio's own box toggles the first one. */
+  #route [role=group] { position: relative; }
+  .btn-check { position: absolute; top: 4px; left: 4px; clip: rect(0, 0, 0, 0); pointer-events: none; }
+  .btn { position: relative; display: inline-block; padding: 8px 14px; border: 1px solid #888; cursor: pointer; }
+  /* The label's own pseudo-element is what a click lands on, as OpenStreetMap's icons. */
+  .btn::before { content: ''; position: absolute; inset: 0; }
+  .btn-check:checked + .btn { background: #36c; color: #fff; }
+  .btn i { display: inline-block; width: 16px; height: 16px; background: currentColor; }
+  .datefield { position: relative; display: inline-block; width: 200px; height: 44px; border: 1px solid #888; }
+  .datefield .overlay { position: absolute; inset: 0; background: #fff; padding: 10px; }
+  .datefield.editing .overlay { opacity: 0; }
+  .datefield .group { padding: 10px; }
+  .datefield input { width: 40px; }
+  .picker { width: 240px; border: 1px solid #888; padding: 6px; }
+  .picker .header { display: flex; justify-content: space-between; }
+  .picker td a { display: block; padding: 2px 6px; }
+  .ui-slider { position: relative; width: 300px; height: 10px; margin: 20px 10px; background: #ddd; }
+  .ui-slider-range { position: absolute; height: 100%; background: #36c; }
+  .ui-slider-handle { position: absolute; top: -4px; width: 16px; height: 18px; margin-left: -8px; background: #333; }
+  .nothing { width: 0; height: 0; margin: 0; padding: 0; border: 0; opacity: 0; appearance: none; }
+  .box { display: inline-block; padding: 6px 12px; border: 1px solid #888; cursor: pointer; }
+  [role=spinbutton] { display: inline-block; min-width: 40px; border: 1px solid #888; padding: 2px; }
+</style>
+</head>
+<body>
+<h1>Controls</h1>
+
+<section id="route-copy" style="display: none">
+  <!-- The same ids as below, in a copy of the form for small screens, as on
+       OpenStreetMap: the labels below belong to these inputs as far as ids go. -->
+  <div role="group" aria-label="Mode again">
+    <input type="radio" class="btn-check" name="modes_small" id="modes_foot" value="foot">
+    <label class="btn" for="modes_foot" aria-label="On foot (small screens)"><i aria-hidden="true"></i></label>
+  </div>
+</section>
+
+<section id="route">
+  <h2>Directions</h2>
+  <div role="group" aria-label="Mode">
+    <input type="radio" class="btn-check" name="modes" id="modes_car" value="car" checked>
+    <label class="btn" for="modes_car" title="Car"><i aria-hidden="true"></i></label>
+    <input type="radio" class="btn-check" name="modes" id="modes_foot" value="foot">
+    <label class="btn" for="modes_foot" title="Foot"><i aria-hidden="true"></i></label>
+    <input type="radio" class="btn-check" name="modes" id="modes_bike" value="bicycle">
+    <label class="btn" for="modes_bike"><i aria-hidden="true"></i></label>
+  </div>
+</section>
+
+<section id="date">
+  <h2>Travel date</h2>
+  <div class="datefield" id="datefield">
+    <span class="overlay" aria-hidden="true">Oktober 2026</span>
+    <div class="group" role="group">
+      <input type="text" inputmode="numeric" role="spinbutton" aria-label="Tag" value="14"
+      >.<input type="text" inputmode="numeric" role="spinbutton" aria-label="Monat" value="10"
+      >.<input type="text" inputmode="numeric" role="spinbutton" aria-label="Jahr" value="2026">
+    </div>
+  </div>
+  <div role="spinbutton" tabindex="0" aria-label="Guests" aria-valuemin="1" aria-valuemax="9" aria-valuenow="2">2</div>
+  <div role="spinbutton" tabindex="0" aria-label="Weekday" aria-valuenow="3" aria-valuetext="Wednesday">Wednesday</div>
+</section>
+
+<section id="picker">
+  <label for="when">Date:</label> <input id="when" type="text" readonly value="10/14/2026">
+  <div class="picker ui-datepicker">
+    <div class="header ui-datepicker-header">
+      <a class="ui-datepicker-prev" title="Prev" href="#"><span>Prev</span></a>
+      <div class="ui-datepicker-title"><span class="ui-datepicker-month">November</span>&nbsp;<span class="ui-datepicker-year">2026</span></div>
+      <a class="ui-datepicker-next" title="Next" href="#"><span>Next</span></a>
+    </div>
+    <table class="ui-datepicker-calendar">
+      <thead><tr><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th><th>Su</th></tr></thead>
+      <tbody>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td><a href="#">1</a></td></tr>
+        <tr><td><a href="#">2</a></td><td><a href="#">3</a></td><td><a href="#">4</a></td><td><a href="#">5</a></td><td><a href="#">6</a></td><td><a href="#">7</a></td><td><a href="#">8</a></td></tr>
+        <tr><td><a href="#">9</a></td><td><a href="#">10</a></td><td><a href="#">11</a></td><td><a href="#">12</a></td><td><a href="#">13</a></td><td><a href="#">14</a></td><td><a href="#">15</a></td></tr>
+        <tr><td><a href="#">16</a></td><td><a href="#">17</a></td><td><a href="#">18</a></td><td><a href="#">19</a></td><td><a href="#">20</a></td><td><a href="#">21</a></td><td><a href="#">22</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="slider">
+  <label for="amount">Price range:</label> <input id="amount" type="text" readonly value="$75 - $300">
+  <div class="ui-slider ui-slider-horizontal ui-widget">
+    <div class="ui-slider-range" style="left: 15%; width: 45%"></div>
+    <span tabindex="0" class="ui-slider-handle ui-state-default" style="left: 15%"></span>
+    <span tabindex="0" class="ui-slider-handle ui-state-default" style="left: 60%"></span>
+  </div>
+</section>
+
+<section id="brands">
+  <!-- Zalando's filter dialogs: the inputs are 0x0 and transparent; their labels are
+       what is seen and clicked. -->
+  <div role="group" aria-label="Brand">
+    <input type="checkbox" id="brand-nike" class="nothing" value="nike"><label for="brand-nike" class="box">Nike</label>
+    <input type="checkbox" id="brand-puma" class="nothing" value="puma"><label for="brand-puma" class="box">Puma</label>
+  </div>
+</section>
+
+<script>
+  // The copy's inputs get the clicks on the labels (theirs by id); the page keeps the
+  // two copies in step.
+  document.querySelectorAll('#route-copy input').forEach((copy) => copy.addEventListener('change', () => {
+    document.querySelector(`#route input[value="${copy.value}"]`).checked = true;
+  }));
+  // Like bahn.de: the overlay shows the date in words until the field is used, and stays
+  // over it, transparent, while it is; a click on it focuses the day.
+  const field = document.getElementById('datefield');
+  field.querySelector('.overlay').addEventListener('click', () => {
+    field.classList.add('editing');
+    field.querySelector('input').focus();
+  });
+  // jQuery UI's range slider as jqueryui.com/slider/#range sets it up ($0 to $500, step
+  // 1): the handles take the keys (arrows by a step, Page Up/Down by a fifth of the
+  // range) and follow a drag; neither crosses the other; the readout follows.
+  const slider = document.querySelector('.ui-slider');
+  const handles = [...slider.querySelectorAll('.ui-slider-handle')];
+  const values = [75, 300];
+  const showRange = () => {
+    handles.forEach((h, i) => { h.style.left = (values[i] / 5) + '%'; });
+    const range = slider.querySelector('.ui-slider-range');
+    range.style.left = (values[0] / 5) + '%';
+    range.style.width = ((values[1] - values[0]) / 5) + '%';
+    document.getElementById('amount').value = `$${values[0]} - $${values[1]}`;
+  };
+  const move = (i, v) => {
+    const low = i === 0 ? 0 : values[0];
+    const high = i === 0 ? values[1] : 500;
+    values[i] = Math.round(Math.min(high, Math.max(low, v)));
+    showRange();
+  };
+  handles.forEach((h, i) => {
+    h.addEventListener('keydown', (e) => {
+      const steps = { ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1, PageDown: -100, PageUp: 100 };
+      if (e.key === 'Home') move(i, 0);
+      else if (e.key === 'End') move(i, 500);
+      else if (e.key in steps) move(i, values[i] + steps[e.key]);
+      else return;
+      e.preventDefault();
+    });
+    h.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      h.focus();
+      const follow = (m) => {
+        const r = slider.getBoundingClientRect();
+        move(i, (m.clientX - r.left) / r.width * 500);
+      };
+      const stop = () => {
+        document.removeEventListener('mousemove', follow);
+        document.removeEventListener('mouseup', stop);
+      };
+      document.addEventListener('mousemove', follow);
+      document.addEventListener('mouseup', stop);
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+[package]
+name = "aibrowse-navigator"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+aibrowse-browser.workspace = true
+aibrowse-input.workspace = true
+aibrowse-perception.workspace = true
+dirs.workspace = true
+futures-util.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+url.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+
+[lints]
+workspace = true

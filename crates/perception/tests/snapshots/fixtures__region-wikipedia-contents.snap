@@ -1,0 +1,27 @@
+---
+source: crates/perception/tests/fixtures.rs
+expression: "fuse(raw(fixture), Detail::Interactive, Some(region)).render()"
+---
+# Web browser - Wikipedia
+url: https://en.wikipedia.org/wiki/Web_browser
+viewport: 1425x757, at top of 7043px page
+page: article (heading "Web browser", ~9k chars of text)
+auth: signed out ("Log in" is offered)
+region: navigation "Contents" (only this part of the page, in full)
+
+- navigation "Contents"
+  - heading "Contents" level=2
+  - button "Hide Contents" [e1710]
+  - link "(Top)" [e1713]
+  - link "Function" [e1716]
+  - link "History" [e1722]
+  - link "Features" [e1728]
+  - link "Browser market" [e1734]
+  - button "Toggle Browser market subsection" [e1738]
+  - link "Market share by type of device" [e1743]
+  - link "Security" [e1749]
+  - button "Toggle Security subsection" [e1753]
+  - link "Privacy" [e1758]
+  - link "See also" [e1764]
+  - link "References" [e1770]
+  - link "External links" [e1776]

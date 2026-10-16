@@ -1,0 +1,165 @@
+{
+  "about": "Second fresh-site eval: goals on sites the navigator was never tuned on, many not in English, and goal types beyond help articles (a contact number, a price, a form, a status page, a timetable). For finding new kinds of failure. Each case starts at its site's home page. A run succeeds when the navigator reports Reached and the final URL or title contains one of the keywords (and none of `avoid`). When the navigator hands back for text, the eval types the case's `query` and Enter, as the calling agent would, up to twice. Run with `aibrowse eval navigator --suite evals/fresh2.json`.",
+  "cases": [
+    {
+      "site": "https://www.sl.se",
+      "name": "sl_lost_property",
+      "goal": "SL's page about lost property (hittegods) on Stockholm public transport",
+      "expect": ["hittegods", "lost-property", "lost property"],
+      "avoid": ["sok", "search"],
+      "query": "hittegods"
+    },
+    {
+      "site": "https://www.sncf-connect.com",
+      "name": "sncf_refund",
+      "goal": "SNCF Connect's help page on how to get a refund for a train ticket",
+      "expect": ["rembours", "refund"],
+      "avoid": ["search", "recherche"],
+      "query": "remboursement billet"
+    },
+    {
+      "site": "https://www.renfe.com/es/es",
+      "name": "renfe_pets",
+      "goal": "Renfe's information on travelling with pets (mascotas)",
+      "expect": ["mascota", "animales", "pets"],
+      "avoid": ["buscador", "search"],
+      "query": "viajar con mascotas"
+    },
+    {
+      "site": "https://www.ns.nl/en",
+      "name": "ns_bicycle",
+      "goal": "NS's information on taking a bicycle on Dutch trains",
+      "expect": ["bicycle", "fiets", "bike"],
+      "avoid": ["search", "zoeken"],
+      "query": "bicycle on the train"
+    },
+    {
+      "site": "https://www.zalando.de",
+      "name": "zalando_returns",
+      "goal": "Zalando's help page on how to return an order (Rücksendung)",
+      "expect": ["ruecksend", "rücksend", "retour", "return"],
+      "avoid": ["suche"],
+      "query": "Rücksendung"
+    },
+    {
+      "site": "https://www.github.com",
+      "name": "github_status",
+      "goal": "GitHub's status page showing whether GitHub services are up",
+      "expect": ["githubstatus", "status"],
+      "avoid": [],
+      "query": "status"
+    },
+    {
+      "site": "https://www.digitalocean.com",
+      "name": "digitalocean_droplet_price",
+      "goal": "the page listing DigitalOcean Droplet pricing",
+      "expect": ["pricing"],
+      "avoid": ["search"],
+      "query": "droplet pricing"
+    },
+    {
+      "site": "https://www.mozilla.org",
+      "name": "mozilla_firefox_release_notes",
+      "goal": "the release notes for the current version of Firefox",
+      "expect": ["releasenotes", "release notes"],
+      "avoid": ["search"],
+      "query": "firefox release notes"
+    },
+    {
+      "site": "https://www.ikea.com/se/sv/",
+      "name": "ikea_se_customer_service",
+      "goal": "IKEA Sweden's customer service page (kundservice)",
+      "expect": ["kundservice", "customer-service"],
+      "avoid": ["search", "sok"],
+      "query": "kundservice"
+    },
+    {
+      "site": "https://www.vr.fi/en",
+      "name": "vr_assistance",
+      "goal": "VR's information on assistance services for passengers with reduced mobility",
+      "expect": ["assistance", "avustus", "accessib", "esteet"],
+      "avoid": ["search"],
+      "query": "assistance service"
+    },
+    {
+      "site": "https://www.gov.uk",
+      "name": "govuk_contact_hmrc",
+      "goal": "the GOV.UK page with contact details for HMRC",
+      "expect": ["hmrc"],
+      "avoid": ["search"],
+      "query": "contact HMRC"
+    },
+    {
+      "site": "https://www.usa.gov",
+      "name": "usagov_change_address",
+      "goal": "USA.gov's page on how to change your address with the government",
+      "expect": ["address"],
+      "avoid": ["search"],
+      "query": "change of address"
+    },
+    {
+      "site": "https://www.cloudflare.com",
+      "name": "cloudflare_pricing",
+      "goal": "Cloudflare's plans and pricing page",
+      "expect": ["plans", "pricing"],
+      "avoid": ["search"],
+      "query": "pricing"
+    },
+    {
+      "site": "https://www.spotify.com",
+      "name": "spotify_premium_family",
+      "goal": "Spotify's page about the Premium Family plan",
+      "expect": ["family"],
+      "avoid": ["search"],
+      "query": "premium family"
+    },
+    {
+      "site": "https://docs.github.com",
+      "name": "github_docs_ssh_key",
+      "goal": "the GitHub docs page on adding a new SSH key to a GitHub account",
+      "expect": ["ssh"],
+      "avoid": ["search"],
+      "query": "add ssh key"
+    },
+    {
+      "site": "https://www.wikipedia.org",
+      "name": "wikipedia_portal_german_ada",
+      "goal": "the German Wikipedia article about Ada Lovelace",
+      "expect": ["de.wikipedia.org/wiki/Ada_Lovelace"],
+      "avoid": [],
+      "query": "Ada Lovelace"
+    },
+    {
+      "site": "https://www.booking.com",
+      "name": "booking_cancellation",
+      "goal": "Booking.com's help article on how to cancel a booking",
+      "expect": ["cancel", "aGNfcG9saWNpZXNfY2FuY2VsbGF0aW9u"],
+      "avoid": [],
+      "query": "cancel booking"
+    },
+    {
+      "site": "https://www.dhl.de/en/privatkunden.html",
+      "name": "dhl_track",
+      "goal": "DHL's shipment tracking page",
+      "expect": ["track", "sendungsverfolgung"],
+      "avoid": [],
+      "query": "tracking"
+    },
+    {
+      "site": "https://www.europa.eu",
+      "name": "eu_roaming",
+      "goal": "the EU page on mobile roaming charges when travelling in the EU",
+      "expect": ["roaming"],
+      "avoid": ["search"],
+      "query": "roaming"
+    },
+    {
+      "site": "https://www.japan-guide.com",
+      "name": "japanguide_jr_pass",
+      "goal": "japan-guide.com's page about the Japan Rail Pass",
+      "expect": ["jrpass", "railpass", "rail pass", "2361"],
+      "avoid": ["search"],
+      "query": "japan rail pass"
+    }
+  ]
+}

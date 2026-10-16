@@ -1,0 +1,111 @@
+{
+  "about": "Hard-site eval: government and bank help pages, deep, inconsistent and often behind bot protection. Each case starts at its site's home page. A run succeeds when the navigator reports Reached and the final URL or title contains one of the keywords (and none of `avoid`). When the navigator hands back for text, the eval types the case's `query` and Enter, as the calling agent would, up to twice. Run with `aibrowse eval navigator --suite evals/hard-sites.json`.",
+  "cases": [
+    {
+      "site": "https://www.gov.uk",
+      "name": "govuk_passport",
+      "goal": "the GOV.UK page on how to apply for a new adult UK passport",
+      "expect": [
+        "passport"
+      ],
+      "avoid": [
+        "search"
+      ],
+      "query": "apply for a passport"
+    },
+    {
+      "site": "https://www.irs.gov",
+      "name": "irs_refund_status",
+      "goal": "the IRS page for checking the status of your federal tax refund",
+      "expect": [
+        "refund"
+      ],
+      "avoid": [
+        "search"
+      ],
+      "query": "where's my refund"
+    },
+    {
+      "site": "https://www.ssa.gov",
+      "name": "ssa_replace_card",
+      "goal": "the Social Security page on how to replace a lost Social Security card",
+      "expect": [
+        "replace",
+        "ssnumber",
+        "social-security-card"
+      ],
+      "avoid": [
+        "search"
+      ],
+      "query": "replace social security card"
+    },
+    {
+      "site": "https://www.skatteverket.se",
+      "name": "skatteverket_personnummer",
+      "goal": "Skatteverket's information page about getting a Swedish personal identity number (personnummer)",
+      "expect": [
+        "personnummer",
+        "personal-identity-number",
+        "personal identity number"
+      ],
+      "avoid": [
+        "search",
+        "sok"
+      ],
+      "query": "personnummer"
+    },
+    {
+      "site": "https://www.chase.com",
+      "name": "chase_lost_card",
+      "goal": "Chase's help page on how to report a lost or stolen debit or credit card",
+      "expect": [
+        "lost",
+        "stolen",
+        "replace-card"
+      ],
+      "avoid": [
+        "search"
+      ],
+      "query": "lost or stolen card"
+    },
+    {
+      "site": "https://www.revolut.com",
+      "name": "revolut_freeze_card",
+      "goal": "Revolut's help article on how to freeze a card",
+      "expect": [
+        "freeze"
+      ],
+      "avoid": [
+        "search"
+      ],
+      "query": "freeze card"
+    },
+    {
+      "site": "https://www.hsbc.co.uk",
+      "name": "hsbc_report_fraud",
+      "goal": "HSBC UK's page on how to report fraud or a scam",
+      "expect": [
+        "fraud",
+        "scam",
+        "report-a-problem"
+      ],
+      "avoid": [
+        "search"
+      ],
+      "query": "report fraud"
+    },
+    {
+      "site": "https://www.bankofamerica.com",
+      "name": "bofa_direct_deposit",
+      "goal": "Bank of America's page on how to set up direct deposit",
+      "expect": [
+        "direct-deposit",
+        "direct deposit"
+      ],
+      "avoid": [
+        "search"
+      ],
+      "query": "direct deposit"
+    }
+  ]
+}

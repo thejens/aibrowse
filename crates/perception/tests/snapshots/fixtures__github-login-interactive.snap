@@ -1,0 +1,26 @@
+---
+source: crates/perception/tests/fixtures.rs
+expression: "fuse(&raw, Detail::Interactive, None).render()"
+---
+# Sign in to GitHub · GitHub
+url: https://github.com/login
+viewport: 1440x757, whole page visible
+page: login (password field, button "Sign in")
+auth: only the user can complete this; request_handoff if they are present, and never ask for credentials or codes in chat
+regions: main, contentinfo
+
+- main
+  - heading "Sign in to GitHub" level=1
+  - form (login) → fill(username: "Username or email address" [e10] focused required, password: [e24] required) submit: button "Sign in" [e38]
+    - link "Forgot password?" [e265]
+  - button "Continue with Google" [e426]
+  - button "Continue with Apple" [e443]
+  - link "Create an account" [e284]
+  - button "Sign in with a passkey" [e287]
+- contentinfo
+  - link "Terms" [e293] -> docs.github.com/site-policy/github-terms…
+  - link "Privacy" [e295] -> docs.github.com/site-policy/privacy-poli…
+  - link "Docs" [e297] -> docs.github.com
+  - link "Contact GitHub Support" [e299] -> support.github.com
+  - button "Manage cookies" [e302]
+  - button "Do not share my personal information" [e305]

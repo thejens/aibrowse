@@ -1,0 +1,580 @@
+---
+source: crates/perception/tests/fixtures.rs
+expression: "fuse(&raw, Detail::Full, None).render()"
+---
+# Hacker News
+url: https://news.ycombinator.com/
+viewport: 1425x757, at top of 1267px page
+page: listing (92 items)
+auth: signed out ("login" is offered)
+
+- link [e512] -> https://news.ycombinator.com
+- link "Hacker News" [e517] -> news
+- link "new" [e518] -> newest
+- text: |
+- link "past" [e519] -> front
+- text: |
+- link "comments" [e520] -> newcomments
+- text: |
+- link "ask" [e521] -> ask
+- text: |
+- link "show" [e522] -> show
+- text: |
+- link "jobs" [e493] -> jobs
+- text: |
+- link "submit" [e523] -> submit
+- link "login" [e526] -> login?goto=news
+- cell "1."
+  - text: 1.
+- link "upvote" [e537] -> vote?id=49961861&how=up&goto=news
+- cell "Huawei and Qualcomm Announce Broad Patent License Agreement (huawei.com)"
+  - link "Huawei and Qualcomm Announce Broad Patent License Agreement" [e541] -> https://www.huawei.com/en/news/2026/10/qualcomm-broad-patent…
+  - text: (
+  - link "huawei.com" [e543] -> from?site=huawei.com
+  - text: )
+- cell "35 points by 0xedb 1 hour ago | hide | 22 comments"
+  - text: 35 points
+  - text: by
+  - link "0xedb" [e550] -> user?id=0xedb
+  - text: 
+  - link "22 comments" [e552] -> item?id=49961861
+  - text: 
+  - text: |
+  - link "hide" [e554] -> hide?id=49961861&goto=news
+  - text: |
+- cell "2."
+  - text: 2.
+- link "upvote" [e562] -> vote?id=49953495&how=up&goto=news
+- cell "Run Qwen 3.8 Flash Next (125B) on consumer hardware (RTX 4090) at 100T/s (github.com/niko1221)"
+  - link "Run Qwen 3.8 Flash Next (125B) on consumer hardware (RTX 4090) at 100T/s" [e566] -> https://github.com/Niko1221/Strata
+  - text: (
+  - link "github.com/niko1221" [e568] -> from?site=github.com/niko1221
+  - text: )
+- cell "793 points by snehesht 20 hours ago | hide | 354 comments"
+  - text: 793 points
+  - text: by
+  - link "snehesht" [e575] -> user?id=snehesht
+  - text: 
+  - link "20 hours ago" [e577] -> item?id=49953495
+  - text: 
+  - text: |
+  - link "hide" [e579] -> hide?id=49953495&goto=news
+  - text: |
+- cell "3."
+  - text: 3.
+- link "upvote" [e587] -> vote?id=49961890&how=up&goto=news
+- cell "Sales of sub-€25,000 electric car models set to rise sevenfold (transportenvironment.org)"
+  - link "Sales of sub-€25,000 electric car models set to rise sevenfold" [e591] -> https://www.transportenvironment.org/articles/wave-of-afford…
+  - text: (
+  - link "transportenvironment.org" [e593] -> from?site=transportenvironment.org
+  - text: )
+- cell "34 points by geox 1 hour ago | hide | 33 comments"
+  - text: 34 points
+  - text: by
+  - link "geox" [e600] -> user?id=geox
+  - text: 
+  - link "33 comments" [e602] -> item?id=49961890
+  - text: 
+  - text: |
+  - link "hide" [e604] -> hide?id=49961890&goto=news
+  - text: |
+- cell "4."
+  - text: 4.
+- link "upvote" [e612] -> vote?id=49962012&how=up&goto=news
+- cell "Denmark Data Breach Exposes 8.8M People's Personal Data (cpr.dk)"
+  - link "Denmark Data Breach Exposes 8.8M People's Personal Data" [e616] -> https://www.cpr.dk/cpr-nyt/nyhedsarkiv/2026/okt/omfattende-u…
+  - text: (
+  - link "cpr.dk" [e618] -> from?site=cpr.dk
+  - text: )
+- cell "14 points by clan 1 hour ago | hide | 6 comments"
+  - text: 14 points
+  - text: by
+  - link "clan" [e625] -> user?id=clan
+  - text: 
+  - link "1 hour ago" [e627] -> item?id=49962012
+  - text: 
+  - text: |
+  - link "hide" [e629] -> hide?id=49962012&goto=news
+  - text: |
+- cell "5."
+  - text: 5.
+- link "upvote" [e637] -> vote?id=49957812&how=up&goto=news
+- cell "In the wake of Tippett Studios’ closure, a digital archive appears online (filmstories.co.uk)"
+  - link "In the wake of Tippett Studios’ closure, a digital archive appears online" [e641] -> https://filmstories.co.uk/news/tippett-studios-in-the-wake-o…
+  - text: (
+  - link "filmstories.co.uk" [e643] -> from?site=filmstories.co.uk
+  - text: )
+- cell "130 points by rdmuser 9 hours ago | hide | 14 comments"
+  - text: 130 points
+  - text: by
+  - link "rdmuser" [e650] -> user?id=rdmuser
+  - text: 
+  - link "9 hours ago" [e652] -> item?id=49957812
+  - text: 
+  - text: |
+  - link "hide" [e654] -> hide?id=49957812&goto=news
+  - text: |
+- cell "6."
+  - text: 6.
+- link "upvote" [e662] -> vote?id=49956681&how=up&goto=news
+- cell "A browser-native classic Visual Basic VB6 IDE (wieslawsoltes.github.io)"
+  - link "A browser-native classic Visual Basic VB6 IDE" [e666] -> https://wieslawsoltes.github.io/VB6/
+  - text: (
+  - link "wieslawsoltes.github.io" [e668] -> from?site=wieslawsoltes.github.io
+  - text: )
+- cell "224 points by wiso 14 hours ago | hide | 72 comments"
+  - text: 224 points
+  - text: by
+  - link "wiso" [e675] -> user?id=wiso
+  - text: 
+  - link "14 hours ago" [e677] -> item?id=49956681
+  - text: 
+  - text: |
+  - link "hide" [e679] -> hide?id=49956681&goto=news
+  - text: |
+- cell "7."
+  - text: 7.
+- link "upvote" [e687] -> vote?id=49920332&how=up&goto=news
+- cell "Gods in the Classroom: Religion and Education in First Millennium BCE Babylonia (cambridge.org)"
+  - link "Gods in the Classroom: Religion and Education in First Millennium BCE Babylonia" [e691] -> https://www.cambridge.org/core/journals/iraq/article/gods-in…
+  - text: (
+  - link "cambridge.org" [e693] -> from?site=cambridge.org
+  - text: )
+- cell "33 points by pseudolus 6 hours ago | hide | 4 comments"
+  - text: 33 points
+  - text: by
+  - link "pseudolus" [e700] -> user?id=pseudolus
+  - text: 
+  - link "6 hours ago" [e702] -> item?id=49920332
+  - text: 
+  - text: |
+  - link "hide" [e704] -> hide?id=49920332&goto=news
+  - text: |
+- cell "8."
+  - text: 8.
+- link "upvote" [e712] -> vote?id=49932236&how=up&goto=news
+- cell "The Tao of Backup (taobackup.com)"
+  - link "The Tao of Backup" [e716] -> http://www.taobackup.com/index.html
+  - text: (
+  - link "taobackup.com" [e718] -> from?site=taobackup.com
+  - text: )
+- cell "131 points by vntok 9 hours ago | hide | 43 comments"
+  - text: 131 points
+  - text: by
+  - link "vntok" [e725] -> user?id=vntok
+  - text: 
+  - link "9 hours ago" [e727] -> item?id=49932236
+  - text: 
+  - text: |
+  - link "hide" [e729] -> hide?id=49932236&goto=news
+  - text: |
+- cell "9."
+  - text: 9.
+- link "upvote" [e737] -> vote?id=49948300&how=up&goto=news
+- cell "We ported the original Doom to SQL (cedardb.com)"
+  - link "We ported the original Doom to SQL" [e741] -> https://cedardb.com/blog/sqldoom/
+  - text: (
+  - link "cedardb.com" [e743] -> from?site=cedardb.com
+  - text: )
+- cell "97 points by Vaslo 5 hours ago | hide | 10 comments"
+  - text: 97 points
+  - text: by
+  - link "Vaslo" [e750] -> user?id=Vaslo
+  - text: 
+  - link "5 hours ago" [e752] -> item?id=49948300
+  - text: 
+  - text: |
+  - link "hide" [e754] -> hide?id=49948300&goto=news
+  - text: |
+- cell "10."
+  - text: 10.
+- link "upvote" [e762] -> vote?id=49943637&how=up&goto=news
+- cell "Infidel goes wild (zarfhome.com)"
+  - link "Infidel goes wild" [e766] -> https://blog.zarfhome.com/2026/10/infidel-goes-wild
+  - text: (
+  - link "zarfhome.com" [e768] -> from?site=zarfhome.com
+  - text: )
+- cell "133 points by tobr 12 hours ago | hide | 20 comments"
+  - text: 133 points
+  - text: by
+  - link "tobr" [e775] -> user?id=tobr
+  - text: 
+  - link "12 hours ago" [e777] -> item?id=49943637
+  - text: 
+  - text: |
+  - link "hide" [e779] -> hide?id=49943637&goto=news
+  - text: |
+- cell "11."
+  - text: 11.
+- link "upvote" [e787] -> vote?id=49960901&how=up&goto=news
+- cell "Replacement of petroleum based products with plant-based materials (2025) (wiley.com)"
+  - link "Replacement of petroleum based products with plant-based materials (2025)" [e791] -> https://onlinelibrary.wiley.com/doi/10.1002/eng2.70108
+  - text: (
+  - link "wiley.com" [e793] -> from?site=wiley.com
+  - text: )
+- cell "61 points by thelastgallon 4 hours ago | hide | 22 comments"
+  - text: 61 points
+  - text: by
+  - link "thelastgallon" [e800] -> user?id=thelastgallon
+  - text: 
+  - link "4 hours ago" [e802] -> item?id=49960901
+  - text: 
+  - text: |
+  - link "hide" [e804] -> hide?id=49960901&goto=news
+  - text: |
+- cell "12."
+  - text: 12.
+- link "upvote" [e812] -> vote?id=49957116&how=up&goto=news
+- cell "Turn off Apple Intelligence on macOS 27 and get its disk space back (github.com/omlahore)"
+  - link "Turn off Apple Intelligence on macOS 27 and get its disk space back" [e816] -> https://github.com/omlahore/RemoveMacAI
+  - text: (
+  - link "github.com/omlahore" [e818] -> from?site=github.com/omlahore
+  - text: )
+- cell "562 points by privacyisntdead 13 hours ago | hide | 376 comments"
+  - text: 562 points
+  - text: by
+  - link "privacyisntdead" [e825] -> user?id=privacyisntdead
+  - text: 
+  - link "13 hours ago" [e827] -> item?id=49957116
+  - text: 
+  - text: |
+  - link "hide" [e829] -> hide?id=49957116&goto=news
+  - text: |
+- cell "13."
+  - text: 13.
+- link "upvote" [e837] -> vote?id=49959869&how=up&goto=news
+- cell "Powerless F1 drivers frustrated by Bahrain F1 software glitch (motorsport.com)"
+  - link "Powerless F1 drivers frustrated by Bahrain F1 software glitch" [e841] -> https://www.motorsport.com/f1/news/horrible-totally-unaccept…
+  - text: (
+  - link "motorsport.com" [e843] -> from?site=motorsport.com
+  - text: )
+- cell "191 points by llm_nerd 7 hours ago | hide | 159 comments"
+  - text: 191 points
+  - text: by
+  - link "llm_nerd" [e850] -> user?id=llm_nerd
+  - text: 
+  - link "159 comments" [e852] -> item?id=49959869
+  - text: 
+  - text: |
+  - link "hide" [e854] -> hide?id=49959869&goto=news
+  - text: |
+- cell "14."
+  - text: 14.
+- link "upvote" [e862] -> vote?id=49949438&how=up&goto=news
+- cell "Tell HN: Bob Cringely has died"
+  - link "Tell HN: Bob Cringely has died" [e866] -> item?id=49949438
+- cell "871 points by paveworld 1 day ago | hide | 188 comments"
+  - text: 871 points
+  - text: by
+  - link "paveworld" [e872] -> user?id=paveworld
+  - text: 
+  - text: 
+  - text: |
+  - link "hide" [e876] -> hide?id=49949438&goto=news
+  - text: |
+- cell "15."
+  - text: 15.
+- link "upvote" [e884] -> vote?id=49940044&how=up&goto=news
+- cell "Demystifying Tufte's data-ink ratio (scienceux.org)"
+  - link "Demystifying Tufte's data-ink ratio" [e888] -> https://tuftesrazor.scienceux.org/
+  - text: (
+  - link "scienceux.org" [e890] -> from?site=scienceux.org
+  - text: )
+- cell "43 points by s4074433 10 hours ago | hide | 15 comments"
+  - text: 43 points
+  - text: by
+  - link "s4074433" [e897] -> user?id=s4074433
+  - text: 
+  - link "10 hours ago" [e899] -> item?id=49940044
+  - text: 
+  - text: |
+  - link "hide" [e901] -> hide?id=49940044&goto=news
+  - text: |
+- cell "16."
+  - text: 16.
+- link "upvote" [e909] -> vote?id=49957068&how=up&goto=news
+- cell "Improper redaction reveals Google Data Center water and electricity usage (1011now.com)"
+  - link "Improper redaction reveals Google Data Center water and electricity usage" [e913] -> https://www.1011now.com/2026/09/30/more-questions-than-answe…
+  - text: (
+  - link "1011now.com" [e915] -> from?site=1011now.com
+  - text: )
+- cell "384 points by sensanaty 13 hours ago | hide | 503 comments"
+  - text: 384 points
+  - text: by
+  - link "sensanaty" [e922] -> user?id=sensanaty
+  - text: 
+  - link "13 hours ago" [e924] -> item?id=49957068
+  - text: 
+  - text: |
+  - link "hide" [e926] -> hide?id=49957068&goto=news
+  - text: |
+- cell "17."
+  - text: 17.
+- link "upvote" [e934] -> vote?id=49933476&how=up&goto=news
+- cell "Decision models like Jev don't beat LLM-as-a-judge or traditional classifiers (redhat.com)"
+  - link "Decision models like Jev don't beat LLM-as-a-judge or traditional classifiers" [e938] -> https://developers.redhat.com/articles/2026/10/02/benchmarki…
+  - text: (
+  - link "redhat.com" [e940] -> from?site=redhat.com
+  - text: )
+- cell "55 points by tomncooper 5 hours ago | hide | 12 comments"
+  - text: 55 points
+  - text: by
+  - link "tomncooper" [e947] -> user?id=tomncooper
+  - text: 
+  - link "5 hours ago" [e949] -> item?id=49933476
+  - text: 
+  - text: |
+  - link "hide" [e951] -> hide?id=49933476&goto=news
+  - text: |
+- cell "18."
+  - text: 18.
+- link "upvote" [e959] -> vote?id=49946148&how=up&goto=news
+- cell "Automating my 35mm film scanning pipeline (shannadige.com)"
+  - link "Automating my 35mm film scanning pipeline" [e963] -> https://shannadige.com/blog/darkroom/
+  - text: (
+  - link "shannadige.com" [e965] -> from?site=shannadige.com
+  - text: )
+- cell "75 points by shannadige 19 hours ago | hide | 54 comments"
+  - text: 75 points
+  - text: by
+  - link "shannadige" [e972] -> user?id=shannadige
+  - text: 
+  - link "19 hours ago" [e974] -> item?id=49946148
+  - text: 
+  - text: |
+  - link "hide" [e976] -> hide?id=49946148&goto=news
+  - text: |
+- cell "19."
+  - text: 19.
+- link "upvote" [e984] -> vote?id=49947565&how=up&goto=news
+- cell "'Neanderthals Among Us' review (historytoday.com)"
+  - link "'Neanderthals Among Us' review" [e988] -> https://www.historytoday.com/archive/review/neanderthals-amo…
+  - text: (
+  - link "historytoday.com" [e990] -> from?site=historytoday.com
+  - text: )
+- cell "73 points by pepys 15 hours ago | hide | 72 comments"
+  - text: 73 points
+  - text: by
+  - link "pepys" [e997] -> user?id=pepys
+  - text: 
+  - link "15 hours ago" [e999] -> item?id=49947565
+  - text: 
+  - text: |
+  - link "hide" [e1001] -> hide?id=49947565&goto=news
+  - text: |
+- cell "20."
+  - text: 20.
+- link "upvote" [e1009] -> vote?id=49958569&how=up&goto=news
+- cell "Self-hosted HTTP tunnels with SSH and Nginx (bernat.ch)"
+  - link "Self-hosted HTTP tunnels with SSH and Nginx" [e1013] -> https://vincent.bernat.ch/en/blog/2026-http-over-ssh
+  - text: (
+  - link "bernat.ch" [e1015] -> from?site=bernat.ch
+  - text: )
+- cell "136 points by renehsz 10 hours ago | hide | 31 comments"
+  - text: 136 points
+  - text: by
+  - link "renehsz" [e1022] -> user?id=renehsz
+  - text: 
+  - link "10 hours ago" [e1024] -> item?id=49958569
+  - text: 
+  - text: |
+  - link "hide" [e1026] -> hide?id=49958569&goto=news
+  - text: |
+- cell "21."
+  - text: 21.
+- link "upvote" [e1034] -> vote?id=49908055&how=up&goto=news
+- cell "Lace and Labor: Lessons from the actual Luddites (articlesofinterest.substack.com)"
+  - link "Lace and Labor: Lessons from the actual Luddites" [e1038] -> https://articlesofinterest.substack.com/p/lace-and-labor
+  - text: (
+  - link "articlesofinterest.substack.com" [e1040] -> from?site=articlesofinterest.substack.com
+  - text: )
+- cell "14 points by surprisetalk 6 hours ago | hide | 1 comment" (below)
+  - text: 14 points (below)
+  - text: by (below)
+  - link "surprisetalk" [e1047] -> user?id=surprisetalk (below)
+  - text:  (below)
+  - link "6 hours ago" [e1049] -> item?id=49908055 (below)
+  - text:  (below)
+  - text: | (below)
+  - link "hide" [e1051] -> hide?id=49908055&goto=news (below)
+  - text: | (below)
+- cell "22." (below)
+  - text: 22. (below)
+- link "upvote" [e1059] -> vote?id=49930439&how=up&goto=news (below)
+- cell "Show HN: Glashütte Trash Clock – A 30-minute pendulum clock made from trash (niklasroy.com)" (below)
+  - link "Show HN: Glashütte Trash Clock – A 30-minute pendulum clock made from trash" [e1063] -> https://niklasroy.com/gtc/ (below)
+  - text: ( (below)
+  - link "niklasroy.com" [e1065] -> from?site=niklasroy.com (below)
+  - text: ) (below)
+- cell "197 points by r0r0 21 hours ago | hide | 29 comments" (below)
+  - text: 197 points (below)
+  - text: by (below)
+  - link "r0r0" [e1072] -> user?id=r0r0 (below)
+  - text:  (below)
+  - link "21 hours ago" [e1074] -> item?id=49930439 (below)
+  - text:  (below)
+  - text: | (below)
+  - link "hide" [e1076] -> hide?id=49930439&goto=news (below)
+  - text: | (below)
+- cell "23." (below)
+  - text: 23. (below)
+- link "upvote" [e1084] -> vote?id=49943685&how=up&goto=news (below)
+- cell "Watson Jr. memo about CDC 6600 (1963) (computerhistory.org)" (below)
+  - link "Watson Jr. memo about CDC 6600 (1963)" [e1088] -> https://www.computerhistory.org/revolution/supercomputers/10… (below)
+  - text: ( (below)
+  - link "computerhistory.org" [e1090] -> from?site=computerhistory.org (below)
+  - text: ) (below)
+- cell "42 points by mooreds 12 hours ago | hide | 23 comments" (below)
+  - text: 42 points (below)
+  - text: by (below)
+  - link "mooreds" [e1097] -> user?id=mooreds (below)
+  - text:  (below)
+  - link "12 hours ago" [e1099] -> item?id=49943685 (below)
+  - text:  (below)
+  - text: | (below)
+  - link "hide" [e1101] -> hide?id=49943685&goto=news (below)
+  - text: | (below)
+- cell "24." (below)
+  - text: 24. (below)
+- link "upvote" [e1109] -> vote?id=49917536&how=up&goto=news (below)
+- cell "What is going on with ceiling fans (mcmansionhell.com)" (below)
+  - link "What is going on with ceiling fans" [e1113] -> https://mcmansionhell.com/post/829127919552151552/what-is-go… (below)
+  - text: ( (below)
+  - link "mcmansionhell.com" [e1115] -> from?site=mcmansionhell.com (below)
+  - text: ) (below)
+- cell "298 points by colinprince 1 day ago | hide | 261 comments" (below)
+  - text: 298 points (below)
+  - text: by (below)
+  - link "colinprince" [e1122] -> user?id=colinprince (below)
+  - text:  (below)
+  - link "261 comments" [e1124] -> item?id=49917536 (below)
+  - text:  (below)
+  - text: | (below)
+  - link "hide" [e1126] -> hide?id=49917536&goto=news (below)
+  - text: | (below)
+- cell "25." (below)
+  - text: 25. (below)
+- link "upvote" [e1134] -> vote?id=49953288&how=up&goto=news (below)
+- cell "Bill Draper has died (nytimes.com)" (below)
+  - link "Bill Draper has died" [e1138] -> https://www.nytimes.com/2026/09/30/technology/william-draper… (below)
+  - text: ( (below)
+  - link "nytimes.com" [e1140] -> from?site=nytimes.com (below)
+  - text: ) (below)
+- cell "120 points by bookofjoe 20 hours ago | hide | 38 comments" (below)
+  - text: 120 points (below)
+  - text: by (below)
+  - link "bookofjoe" [e1147] -> user?id=bookofjoe (below)
+  - text:  (below)
+  - link "20 hours ago" [e1149] -> item?id=49953288 (below)
+  - text:  (below)
+  - text: | (below)
+  - link "hide" [e1151] -> hide?id=49953288&goto=news (below)
+  - text: | (below)
+- cell "26." (below)
+  - text: 26. (below)
+- link "upvote" [e1159] -> vote?id=49951891&how=up&goto=news (below)
+- cell "How to scale intent, quality, and artistry with AI [video] (youtube.com)" (below)
+  - link "How to scale intent, quality, and artistry with AI [video]" [e1163] -> https://www.youtube.com/watch?v=GLvFTMtw4Jk (below)
+  - text: ( (below)
+  - link "youtube.com" [e1165] -> from?site=youtube.com (below)
+  - text: ) (below)
+- cell "84 points by simonjgreen 15 hours ago | hide | 30 comments" (below)
+  - text: 84 points (below)
+  - text: by (below)
+  - link "simonjgreen" [e1172] -> user?id=simonjgreen (below)
+  - text:  (below)
+  - link "15 hours ago" [e1174] -> item?id=49951891 (below)
+  - text:  (below)
+  - text: | (below)
+  - link "hide" [e1176] -> hide?id=49951891&goto=news (below)
+  - text: | (below)
+- cell "27." (below)
+  - text: 27. (below)
+- link "upvote" [e1184] -> vote?id=49939308&how=up&goto=news (below)
+- cell "Interview with Chicken Scheme Maintainer Sjamaan/Peter Bex (alexalejandre.com)" (below)
+  - link "Interview with Chicken Scheme Maintainer Sjamaan/Peter Bex" [e1188] -> https://alexalejandre.com/interviews/peter-bex/ (below)
+  - text: ( (below)
+  - link "alexalejandre.com" [e1190] -> from?site=alexalejandre.com (below)
+  - text: ) (below)
+- cell "40 points by veqq 11 hours ago | hide | 11 comments" (below)
+  - text: 40 points (below)
+  - text: by (below)
+  - link "veqq" [e1197] -> user?id=veqq (below)
+  - text:  (below)
+  - link "11 hours ago" [e1199] -> item?id=49939308 (below)
+  - text:  (below)
+  - text: | (below)
+  - link "hide" [e1201] -> hide?id=49939308&goto=news (below)
+  - text: | (below)
+- cell "28." (below)
+  - text: 28. (below)
+- link "upvote" [e1209] -> vote?id=49956003&how=up&goto=news (below)
+- cell "Xray-core concealed a certificate verification bypass vulnerability (github.com/net4people)" (below)
+  - link "Xray-core concealed a certificate verification bypass vulnerability" [e1213] -> https://github.com/net4people/bbs/issues/672 (below)
+  - text: ( (below)
+  - link "github.com/net4people" [e1215] -> from?site=github.com/net4people (below)
+  - text: ) (below)
+- cell "80 points by timbill 15 hours ago | hide | 10 comments" (below)
+  - text: 80 points (below)
+  - text: by (below)
+  - link "timbill" [e1222] -> user?id=timbill (below)
+  - text:  (below)
+  - link "15 hours ago" [e1224] -> item?id=49956003 (below)
+  - text:  (below)
+  - text: | (below)
+  - link "hide" [e1226] -> hide?id=49956003&goto=news (below)
+  - text: | (below)
+- cell "29." (below)
+  - text: 29. (below)
+- link "upvote" [e1234] -> vote?id=49955297&how=up&goto=news (below)
+- cell "Blindsight (Watts Novel) (wikipedia.org)" (below)
+  - link "Blindsight (Watts Novel)" [e1238] -> https://en.wikipedia.org/wiki/Blindsight_(Watts_novel) (below)
+  - text: ( (below)
+  - link "wikipedia.org" [e1240] -> from?site=wikipedia.org (below)
+  - text: ) (below)
+- cell "84 points by mooreds 16 hours ago | hide | 82 comments" (below)
+  - text: 84 points (below)
+  - text: by (below)
+  - text:  (below)
+  - link "16 hours ago" [e1249] -> item?id=49955297 (below)
+  - text:  (below)
+  - text: | (below)
+  - link "hide" [e1251] -> hide?id=49955297&goto=news (below)
+  - text: | (below)
+- cell "30." (below)
+  - text: 30. (below)
+- link "upvote" [e1259] -> vote?id=49950554&how=up&goto=news (below)
+- cell "Why don't more developers “use the platform”? (nolanlawson.com)" (below)
+  - link "Why don't more developers “use the platform”?" [e1263] -> https://nolanlawson.com/2026/10/03/why-dont-more-developers-… (below)
+  - text: ( (below)
+  - link "nolanlawson.com" [e1265] -> from?site=nolanlawson.com (below)
+  - text: ) (below)
+- cell "297 points by vinhnx 1 day ago | hide | 314 comments" (below)
+  - text: 297 points (below)
+  - text: by (below)
+  - link "vinhnx" [e1272] -> user?id=vinhnx (below)
+  - text:  (below)
+  - link "314 comments" [e1274] -> item?id=49950554 (below)
+  - text:  (below)
+  - text: | (below)
+  - link "hide" [e1276] -> hide?id=49950554&goto=news (below)
+  - text: | (below)
+- cell "More" (below)
+  - link "More" [e1283] -> ?p=2 (below)
+- link "Consider applying for YC's Winter 2027 batch! Applications are open till November 2." [e1292] -> https://www.ycombinator.com/apply/ (below)
+- link "Guidelines" [e1296] -> newsguidelines.html (below)
+- text: | (below)
+- link "FAQ" [e1297] -> newsfaq.html (below)
+- text: | (below)
+- link "Lists" [e1298] -> lists (below)
+- text: | (below)
+- link "API" [e1299] -> https://github.com/HackerNews/API (below)
+- text: | (below)
+- link "Security" [e1300] -> security.html (below)
+- text: | (below)
+- link "Legal" [e1301] -> https://www.ycombinator.com/legal/ (below)
+- text: | (below)
+- text: | (below)
+- link "Contact" [e1303] -> mailto:hn@ycombinator.com (below)
+- form → fill(text: "Search" [e1305] (below))
+  - text: Search: (below)

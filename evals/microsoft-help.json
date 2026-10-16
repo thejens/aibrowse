@@ -1,0 +1,45 @@
+{
+  "about": "Help-center eval: Microsoft's support sites, where answers sit several levels deep or behind the site's search. Every site × every goal, from the site's home page. A run succeeds when the navigator reports Reached and the final URL or title contains one of the goal's keywords (and none of `avoid`: a search results page whose query holds the keyword is not the article). When the navigator hands back for text, the eval types the goal's `query` and Enter, as the calling agent would, up to twice. Run with `aibrowse eval navigator --suite evals/microsoft-help.json`.",
+  "goals": {
+    "bluetooth": {
+      "goal": "the Microsoft support article on fixing Bluetooth problems in Windows",
+      "expect": ["bluetooth"],
+      "avoid": ["search"],
+      "query": "fix bluetooth problems windows"
+    },
+    "default_browser": {
+      "goal": "the Microsoft support article on how to change the default web browser in Windows",
+      "expect": ["default-browser", "default browser", "default-apps", "default apps"],
+      "avoid": ["search"],
+      "query": "change default browser windows"
+    },
+    "recover_account": {
+      "goal": "the Microsoft support article on how to recover a Microsoft account you can't sign in to",
+      "expect": ["recover", "can-t-sign-in", "cant-sign-in", "can't sign in"],
+      "avoid": ["search"],
+      "query": "recover microsoft account"
+    },
+    "store_refund": {
+      "goal": "the Microsoft support article on how to return or get a refund for something bought from the Microsoft Store",
+      "expect": ["refund", "return"],
+      "avoid": ["search"],
+      "query": "microsoft store refund"
+    },
+    "outlook_shortcuts": {
+      "goal": "the list of keyboard shortcuts for Outlook",
+      "expect": ["keyboard-shortcuts", "keyboard shortcuts"],
+      "avoid": ["search"],
+      "query": "outlook keyboard shortcuts"
+    },
+    "windows11_requirements": {
+      "goal": "the Windows 11 system requirements",
+      "expect": ["requirements", "specifications", "specs"],
+      "avoid": ["search"],
+      "query": "windows 11 system requirements"
+    }
+  },
+  "sites": [
+    "https://support.microsoft.com/en-us",
+    "https://www.microsoft.com/en-us"
+  ]
+}

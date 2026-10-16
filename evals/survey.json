@@ -1,0 +1,448 @@
+{
+  "about": "Survey eval: `survey(sites, goal)` on shops in several countries and kinds of goods (a product's price, a category's listing, a service's price), so that nothing is tuned to one market or site. A site counts as found when its navigator reached the goal, the page's URL or title contains one of the site's `expect` (case-insensitive), and the quoted text contains every one of `facts` (a currency sign: a price came back). Run with `aibrowse eval survey` (needs a Jev key). Prices and stock change; the facts ask only that some price is there. Surveys with `filters` narrow each listing reached with the shop's own filters; with `max_price`, a site counts only when the filters were set and every price quoted is within it. The compare surveys ask a price-comparison site for a product's page listing shops and their prices (\"the best price for X\"), in three countries.",
+  "surveys": [
+    {
+      "name": "se_bootfitting_price",
+      "goal": "the price of boot fitting (bootfitting) for ski boots",
+      "texts": [
+        "bootfitting"
+      ],
+      "sites": [
+        {
+          "url": "https://www.xxl.se",
+          "expect": [
+            "bootfit"
+          ],
+          "facts": [
+            ":-"
+          ]
+        },
+        {
+          "url": "https://skidshop.se",
+          "expect": [
+            "bootfit",
+            "service"
+          ],
+          "facts": [
+            ":-"
+          ]
+        },
+        {
+          "url": "https://alpingaraget.se",
+          "expect": [
+            "bootfit"
+          ],
+          "facts": []
+        }
+      ]
+    },
+    {
+      "name": "se_hybrid_bikes",
+      "goal": "the shop's list of hybrid bikes (hybridcyklar) for adults",
+      "texts": [
+        "hybridcykel"
+      ],
+      "focus": "bike models and their prices",
+      "sites": [
+        {
+          "url": "https://www.cykelkraft.se",
+          "expect": [
+            "hybrid"
+          ],
+          "facts": [
+            "kr"
+          ]
+        },
+        {
+          "url": "https://www.xxl.se",
+          "expect": [
+            "hybrid"
+          ],
+          "facts": [
+            ":-"
+          ]
+        },
+        {
+          "url": "https://www.intersport.se",
+          "expect": [
+            "hybrid"
+          ],
+          "facts": [
+            "kr"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "uk_kindle_paperwhite",
+      "goal": "the product page for the Amazon Kindle Paperwhite e-reader, with its price",
+      "texts": [
+        "kindle paperwhite"
+      ],
+      "focus": "the model and its price",
+      "sites": [
+        {
+          "url": "https://www.currys.co.uk",
+          "expect": [
+            "kindle",
+            "paperwhite"
+          ],
+          "facts": [
+            "£"
+          ]
+        },
+        {
+          "url": "https://www.argos.co.uk",
+          "expect": [
+            "kindle",
+            "paperwhite"
+          ],
+          "facts": [
+            "£"
+          ]
+        },
+        {
+          "url": "https://www.johnlewis.com",
+          "expect": [
+            "kindle",
+            "paperwhite"
+          ],
+          "facts": [
+            "£"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "us_running_shoes",
+      "goal": "the product page for Brooks Ghost men's running shoes, with the price",
+      "texts": [
+        "brooks ghost"
+      ],
+      "focus": "the model and its price",
+      "sites": [
+        {
+          "url": "https://www.rei.com",
+          "expect": [
+            "ghost"
+          ],
+          "facts": [
+            "$"
+          ]
+        },
+        {
+          "url": "https://www.zappos.com",
+          "expect": [
+            "ghost"
+          ],
+          "facts": [
+            "$"
+          ]
+        },
+        {
+          "url": "https://www.runningwarehouse.com",
+          "expect": [
+            "ghost"
+          ],
+          "facts": [
+            "$"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "de_trekking_bikes",
+      "goal": "the shop's list of trekking bikes (Trekkingräder)",
+      "texts": [
+        "Trekkingrad"
+      ],
+      "focus": "bike models and their prices",
+      "sites": [
+        {
+          "url": "https://www.rosebikes.de",
+          "expect": [
+            "trekking"
+          ],
+          "facts": [
+            "€"
+          ]
+        },
+        {
+          "url": "https://www.decathlon.de",
+          "expect": [
+            "trekking"
+          ],
+          "facts": [
+            "€"
+          ]
+        },
+        {
+          "url": "https://www.fahrrad.de",
+          "expect": [
+            "trekking"
+          ],
+          "facts": [
+            "€"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "uk_bike_service_price",
+      "goal": "the price of a standard bike service at the shop's workshop",
+      "texts": [
+        "bike service"
+      ],
+      "focus": "service levels and their prices",
+      "sites": [
+        {
+          "url": "https://www.halfords.com",
+          "expect": [
+            "servic",
+            "repair"
+          ],
+          "facts": [
+            "£"
+          ]
+        },
+        {
+          "url": "https://www.evanscycles.com",
+          "expect": [
+            "servic",
+            "workshop",
+            "repair"
+          ],
+          "facts": [
+            "£"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "se_hybrid_under_5000",
+      "goal": "the shop's list of hybrid bikes (hybridcyklar) for adults",
+      "texts": [
+        "hybridcykel"
+      ],
+      "filters": "price at most 5000 kr",
+      "max_price": 5000,
+      "focus": "bike models and their prices",
+      "sites": [
+        {
+          "url": "https://www.xxl.se",
+          "expect": [
+            "hybrid"
+          ],
+          "facts": []
+        },
+        {
+          "url": "https://www.intersport.se",
+          "expect": [
+            "hybrid"
+          ],
+          "facts": []
+        },
+        {
+          "url": "https://www.cykelkraft.se",
+          "expect": [
+            "hybrid"
+          ],
+          "facts": []
+        }
+      ]
+    },
+    {
+      "name": "de_trekking_under_1500",
+      "goal": "the shop's list of trekking bikes (Trekkingräder)",
+      "texts": [
+        "Trekkingrad"
+      ],
+      "filters": "price at most 1500 euro",
+      "max_price": 1500,
+      "focus": "bike models and their prices",
+      "sites": [
+        {
+          "url": "https://www.rosebikes.de",
+          "expect": [
+            "trekking"
+          ],
+          "facts": []
+        },
+        {
+          "url": "https://www.decathlon.de",
+          "expect": [
+            "trekking"
+          ],
+          "facts": []
+        },
+        {
+          "url": "https://www.fahrrad.de",
+          "expect": [
+            "trekking"
+          ],
+          "facts": []
+        }
+      ]
+    },
+    {
+      "name": "uk_tvs_under_500",
+      "goal": "the shop's list of televisions",
+      "texts": [
+        "tv"
+      ],
+      "filters": "price at most 500 pounds",
+      "max_price": 500,
+      "focus": "TV models and their prices",
+      "sites": [
+        {
+          "url": "https://www.currys.co.uk",
+          "expect": [
+            "tv",
+            "television"
+          ],
+          "facts": []
+        },
+        {
+          "url": "https://www.argos.co.uk",
+          "expect": [
+            "tv",
+            "television"
+          ],
+          "facts": []
+        },
+        {
+          "url": "https://www.johnlewis.com",
+          "expect": [
+            "tv",
+            "television"
+          ],
+          "facts": []
+        }
+      ]
+    },
+    {
+      "name": "us_running_shoes_under_100",
+      "goal": "the shop's list of men's running shoes",
+      "texts": [
+        "mens running shoes"
+      ],
+      "filters": "price at most 100 dollars",
+      "max_price": 100,
+      "focus": "shoe models and their prices",
+      "sites": [
+        {
+          "url": "https://www.rei.com",
+          "expect": [
+            "running",
+            "shoe"
+          ],
+          "facts": []
+        },
+        {
+          "url": "https://www.zappos.com",
+          "expect": [
+            "running",
+            "shoe"
+          ],
+          "facts": []
+        },
+        {
+          "url": "https://www.runningwarehouse.com",
+          "expect": [
+            "running",
+            "shoe"
+          ],
+          "facts": []
+        }
+      ]
+    },
+    {
+      "name": "se_compare_airpods",
+      "goal": "the price comparison page for Apple AirPods Pro 2 (USB-C), listing shops and their prices",
+      "texts": [
+        "AirPods Pro 2"
+      ],
+      "focus": "the shops and their prices",
+      "sites": [
+        {
+          "url": "https://www.prisjakt.nu",
+          "expect": [
+            "airpods"
+          ],
+          "facts": [
+            "kr"
+          ]
+        },
+        {
+          "url": "https://www.pricerunner.se",
+          "expect": [
+            "airpods"
+          ],
+          "facts": [
+            "kr"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "de_compare_kindle",
+      "goal": "the price comparison page for the Amazon Kindle Paperwhite, listing shops and their prices",
+      "texts": [
+        "Kindle Paperwhite"
+      ],
+      "focus": "the shops and their prices",
+      "sites": [
+        {
+          "url": "https://www.idealo.de",
+          "expect": [
+            "kindle",
+            "paperwhite"
+          ],
+          "facts": [
+            "€"
+          ]
+        },
+        {
+          "url": "https://geizhals.de",
+          "expect": [
+            "kindle",
+            "paperwhite"
+          ],
+          "facts": [
+            "€"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "uk_compare_headphones",
+      "goal": "the price comparison page for the Sony WH-1000XM5 headphones, listing shops and their prices",
+      "texts": [
+        "Sony WH-1000XM5"
+      ],
+      "focus": "the shops and their prices",
+      "sites": [
+        {
+          "url": "https://pricespy.co.uk",
+          "expect": [
+            "wh-1000xm5",
+            "1000xm5"
+          ],
+          "facts": [
+            "£"
+          ]
+        },
+        {
+          "url": "https://www.pricerunner.com",
+          "expect": [
+            "wh-1000xm5",
+            "1000xm5"
+          ],
+          "facts": [
+            "£"
+          ]
+        }
+      ]
+    }
+  ]
+}

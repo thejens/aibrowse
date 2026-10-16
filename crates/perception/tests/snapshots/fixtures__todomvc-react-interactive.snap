@@ -1,0 +1,29 @@
+---
+source: crates/perception/tests/fixtures.rs
+expression: "fuse(&raw, Detail::Interactive, None).render()"
+---
+# TodoMVC: React
+url: https://todomvc.com/examples/react/dist/
+viewport: 1425x757, at top of 783px page
+regions: complementary, contentinfo
+
+- complementary
+  - heading "React" level=3
+  - heading "React" level=5
+  - link "Source" [e65] -> github.com/tastejs/todomvc/tree/gh-pages…
+  - heading "TypeScript + React" level=5
+  - link "Demo" [e67]
+  - link "Source" [e68] -> github.com/tastejs/todomvc/tree/gh-pages…
+  - link "React" [e73] -> facebook.github.io/react
+  - heading "Official Resources" level=4
+  - link "Quick Start" [e78] -> react.dev/learn
+  - link "API Reference" [e80] -> react.dev/reference/react
+  - link "Philosophy" [e82] -> petehuntsposts.quora.com/React-Under-the…
+  - link "React Community" [e84] -> react.dev/community
+  - heading "Community" level=4
+  - link "ReactJS on Stack Overflow" [e88] -> stackoverflow.com/questions/tagged/react…
+  - link "let us know" [e92] -> github.com/tastejs/todomvc/issues
+- heading "todos" level=1
+- textbox "New Todo Input" [e122] focused
+- contentinfo
+  - link "TodoMVC" [e25] -> todomvc.com

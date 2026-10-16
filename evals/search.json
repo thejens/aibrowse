@@ -1,0 +1,41 @@
+{
+  "about": "Search eval: `search(query, criterion)` on Google against queries whose good answers are known. A query is found when any page the search returns as fulfilling the criterion has one of `expect` in its URL; other pages it returns may qualify too and are reported, not counted against it. Run with `aibrowse eval search` (needs a Jev key).",
+  "queries": [
+    {
+      "name": "rust_http_client",
+      "query": "rust http client library",
+      "criterion": "the documentation or homepage of a Rust HTTP client library that supports async",
+      "expect": ["docs.rs/reqwest", "docs.rs/hyper", "hyper.rs", "github.com/seanmonstar/reqwest", "crates.io/crates/reqwest", "docs.rs/ureq", "docs.rs/isahc", "docs.rs/surf"]
+    },
+    {
+      "name": "uv_docs",
+      "query": "uv python package manager",
+      "criterion": "the official documentation or repository of uv, the Python package manager by Astral",
+      "expect": ["docs.astral.sh/uv", "github.com/astral-sh/uv", "astral.sh"]
+    },
+    {
+      "name": "postgres_jsonb",
+      "query": "postgres jsonb operators",
+      "criterion": "the official PostgreSQL documentation page that lists the JSON/JSONB operators",
+      "expect": ["postgresql.org/docs"]
+    },
+    {
+      "name": "mdn_flatmap",
+      "query": "array flatMap javascript",
+      "criterion": "the MDN reference page for Array.prototype.flatMap",
+      "expect": ["developer.mozilla.org"]
+    },
+    {
+      "name": "tokio_select",
+      "query": "tokio select macro",
+      "criterion": "the API documentation of tokio's select! macro",
+      "expect": ["docs.rs/tokio", "tokio.rs"]
+    },
+    {
+      "name": "oss_notes",
+      "query": "open source note taking app",
+      "criterion": "the official homepage of an open-source note-taking app",
+      "expect": ["joplinapp.org", "notesnook.com", "logseq.com", "standardnotes.com", "trilium", "siyuan", "anytype.io", "zettlr.com", "nodum.md", "appflowy.io", "affine.pro"]
+    }
+  ]
+}

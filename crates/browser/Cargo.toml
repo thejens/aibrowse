@@ -1,0 +1,29 @@
+[package]
+name = "aibrowse-browser"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+aibrowse-cdp.workspace = true
+aibrowse-input.workspace = true
+aibrowse-network.workspace = true
+command-fds.workspace = true
+dirs.workspace = true
+rand.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+url.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+base64.workspace = true
+serde_json.workspace = true
+tempfile.workspace = true
+
+[lints]
+workspace = true

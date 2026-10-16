@@ -1,0 +1,257 @@
+{
+  "about": "Goals in parts on ordinary sites: navigate(goal, then=[...]) with filters, sorting, paging and language switches, each part acting on the page the last one left. A run succeeds when every part is reached and the final URL or title contains one of `expect` and all of `require` (and none of `avoid`). Texts are offered up front, as an agent passes texts=[...]. Run with `aibrowse eval navigator --suite evals/parts.json --profile eval-parts`.",
+  "cases": [
+    {
+      "site": "https://github.com/trending",
+      "name": "github_trending_rust_week",
+      "goal": "GitHub's trending repositories for the Rust language",
+      "then": [
+        "show the repositories trending this week"
+      ],
+      "expect": [
+        "trending/rust"
+      ],
+      "require": [
+        "since=weekly"
+      ],
+      "texts": [
+        "Rust"
+      ]
+    },
+    {
+      "site": "https://hn.algolia.com",
+      "name": "hn_search_by_date_week",
+      "goal": "Hacker News search results for rust",
+      "then": [
+        "sort the results by date",
+        "only show results from the past week"
+      ],
+      "texts": [
+        "rust"
+      ],
+      "expect": [
+        "query=rust"
+      ],
+      "require": [
+        "sort=bydate",
+        "daterange=pastweek"
+      ]
+    },
+    {
+      "site": "https://books.toscrape.com",
+      "name": "books_mystery_page2",
+      "goal": "the Mystery category of books",
+      "then": [
+        "the second page of the category"
+      ],
+      "expect": [
+        "mystery_3/page-2"
+      ]
+    },
+    {
+      "site": "https://quotes.toscrape.com",
+      "name": "quotes_love_page2",
+      "goal": "the quotes tagged love",
+      "then": [
+        "the next page of those quotes"
+      ],
+      "expect": [
+        "tag/love/page/2"
+      ]
+    },
+    {
+      "site": "https://en.wikipedia.org",
+      "name": "wikipedia_sweden_swedish",
+      "goal": "the Wikipedia article on Sweden",
+      "then": [
+        "the same article in Swedish"
+      ],
+      "texts": [
+        "Sweden"
+      ],
+      "expect": [
+        "sv.wikipedia.org/wiki/sverige"
+      ]
+    },
+    {
+      "site": "https://en.wikipedia.org",
+      "name": "wikipedia_rust_history",
+      "goal": "the Wikipedia article on the Rust programming language",
+      "then": [
+        "the article's revision history"
+      ],
+      "texts": [
+        "Rust programming language"
+      ],
+      "expect": [
+        "action=history"
+      ],
+      "require": [
+        "rust"
+      ]
+    },
+    {
+      "site": "https://arxiv.org",
+      "name": "arxiv_oldest_first",
+      "goal": "arXiv search results for diffusion models",
+      "then": [
+        "sort the results with the oldest first"
+      ],
+      "texts": [
+        "diffusion models"
+      ],
+      "expect": [
+        "order=announced_date_first",
+        "order=submitted_date"
+      ],
+      "require": [
+        "diffusion"
+      ],
+      "avoid": [
+        "order=-"
+      ]
+    },
+    {
+      "site": "https://openlibrary.org",
+      "name": "openlibrary_dune_oldest",
+      "goal": "Open Library search results for books matching dune",
+      "then": [
+        "sort the results by first published"
+      ],
+      "texts": [
+        "dune"
+      ],
+      "expect": [
+        "sort=old"
+      ],
+      "require": [
+        "dune"
+      ]
+    },
+    {
+      "site": "https://pypi.org",
+      "name": "pypi_requests_updated",
+      "goal": "PyPI search results for requests",
+      "then": [
+        "order the results by date last updated"
+      ],
+      "texts": [
+        "requests"
+      ],
+      "expect": [
+        "o=-created"
+      ],
+      "require": [
+        "q=requests"
+      ]
+    },
+    {
+      "site": "https://crates.io",
+      "name": "crates_serde_recent",
+      "goal": "crates.io search results for serde",
+      "then": [
+        "sort the results by recent downloads"
+      ],
+      "texts": [
+        "serde"
+      ],
+      "expect": [
+        "sort=recent-downloads"
+      ],
+      "require": [
+        "serde"
+      ]
+    },
+    {
+      "site": "https://github.com/rust-lang/rust",
+      "name": "github_rust_closed_issues",
+      "goal": "the repository's issues",
+      "then": [
+        "show only the closed issues"
+      ],
+      "expect": [
+        "is%3aclosed",
+        "is:closed",
+        "state%3aclosed",
+        "state=closed",
+        "is+closed"
+      ],
+      "require": [
+        "issues"
+      ]
+    },
+    {
+      "site": "https://docs.python.org/3/",
+      "name": "python_library_json",
+      "goal": "the Python standard library reference",
+      "then": [
+        "the documentation of the json module"
+      ],
+      "expect": [
+        "library/json.html"
+      ]
+    },
+    {
+      "site": "https://developer.mozilla.org/en-US/",
+      "name": "mdn_map_french",
+      "goal": "MDN's reference page for Array.prototype.map()",
+      "then": [
+        "the same page in French"
+      ],
+      "texts": [
+        "Array.prototype.map"
+      ],
+      "expect": [
+        "/fr/docs/web/javascript/reference/global_objects/array/map"
+      ]
+    },
+    {
+      "site": "https://news.ycombinator.com",
+      "name": "hn_show_page2",
+      "goal": "the Show HN listing",
+      "then": [
+        "the second page of Show HN"
+      ],
+      "expect": [
+        "show?p=2"
+      ]
+    },
+    {
+      "site": "https://www.ebay.com",
+      "name": "ebay_lego_bin_max",
+      "goal": "eBay search results for lego technic",
+      "then": [
+        "only show Buy It Now listings",
+        "set the maximum price to 50"
+      ],
+      "texts": [
+        "lego technic",
+        "50"
+      ],
+      "expect": [
+        "_udhi=50"
+      ],
+      "require": [
+        "lh_bin=1"
+      ]
+    },
+    {
+      "site": "https://www.ikea.com/se/sv/",
+      "name": "ikea_sofa_cheapest",
+      "goal": "IKEA's search results for soffa",
+      "then": [
+        "sort the results by price, lowest first"
+      ],
+      "texts": [
+        "soffa"
+      ],
+      "expect": [
+        "price_low_to_high",
+        "sort=price"
+      ],
+      "require": [
+        "soffa"
+      ]
+    }
+  ]
+}

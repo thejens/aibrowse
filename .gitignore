@@ -1,0 +1,9 @@
+/target
+node_modules/
+/web/**/dist/
+/.aibrowse/
+.DS_Store
+.env
+*.snap.new
+*.log
+.claude/worktrees/

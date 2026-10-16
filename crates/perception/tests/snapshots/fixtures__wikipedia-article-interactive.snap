@@ -1,0 +1,167 @@
+---
+source: crates/perception/tests/fixtures.rs
+expression: "fuse(&raw, Detail::Interactive, None).render()"
+---
+# Web browser - Wikipedia
+url: https://en.wikipedia.org/wiki/Web_browser
+viewport: 1425x757, at top of 7043px page
+page: article (heading "Web browser", ~9k chars of text)
+auth: signed out ("Log in" is offered)
+regions: banner, navigation "Contents", main, contentinfo
+
+- banner
+  - navigation "Site"
+    - button "Main menu" [e1563] opens-menu
+  - link "Wikipedia The Free Encyclopedia" [e1618]
+  - search → fill(search: "Search Wikipedia" [e1633]) submit: button "Search" [e1641]
+  - navigation "Personal tools"
+    - link "Donate" [e1665] -> donate.wikimedia.org
+    - link "Create account" [e1668]
+    - link "Log in" [e1671]
+- navigation "Contents"
+  - heading "Contents" level=2
+  - button "Hide Contents" [e1710]
+  - link "(Top)" [e1713]
+  - link "Function" [e1716]
+  - link "History" [e1722]
+  - link "Features" [e1728]
+  - link "Browser market" [e1734]
+  - button "Toggle Browser market subsection" [e1738]
+  - link "Market share by type of device" [e1743]
+  - link "Security" [e1749]
+  - button "Toggle Security subsection" [e1753]
+  - link "Privacy" [e1758]
+  - link "See also" [e1764]
+  - link "References" [e1770]
+  - link "External links" [e1776]
+- main
+  - heading "Web browser" level=1
+  - button "145 languages" [e1796] opens-menu
+  - navigation "Namespaces"
+    - link "Article" [e2249]
+    - link "Talk" [e2252]
+  - navigation "Views"
+    - link "Read" [e2268]
+    - link "View source" [e2271]
+    - link "View history" [e2274]
+  - navigation "Page tools"
+    - button "Tools" [e2278] opens-menu
+  - navigation "Appearance"
+    - button "Hide Appearance" [e2365]
+  - link "Page semi-protected" [e2372]
+  - link [e2394]
+  - link "Safari" [e2396]
+  - link "MacBook" [e2397]
+  - link "Wikipedia" [e2398]
+  - link "web page" [e2399]
+  - link "application" [e2403]
+  - link "websites" [e2404]
+  - link "user" [e2405]
+  - link "files" [e2407]
+  - link "web server" [e2408]
+  - link "desktops" [e2410]
+  - link "laptops" [e2411]
+  - link "tablets" [e2412]
+  - link "smartphones" [e2413]
+  - link "smartwatches" [e2414]
+  - link "smart televisions" [e2415]
+  - link "consoles" [e2416]
+  - link "[1]" [e2418]
+  - link "Google Chrome" [e2430]
+  - link "market share" [e2431]
+  - link "Edge" [e2433]
+  - link "Firefox" [e2434]
+  - link "Samsung Browser" [e2435]
+  - link "Opera" [e2436]
+  - link "[2]" [e2438]
+  - link "[3]" [e2443]
+  - link "[4]" [e2448]
+  - region "Function"
+    - heading "Function" level=2
+    - link "English Wikipedia" [e2552]
+    - link "Firefox" [e2553]
+    - link "[5]" [e2556]
+    - link "Uniform Resource Locator" [e2560]
+    - link "address bar" [e2564]
+    - link "the Web" [e2565]
+    - link "Hypertext Transfer Protocol" [e2570]
+    - link "secure mode" [e2571]
+    - link "web server" [e2572]
+    - link "encrypted" [e2573]
+    - link "secure" [e2574]
+    - link "private" [e2575]
+    - link "[6]" [e2577]
+    - link "[7]" [e2582]
+    - link "[8]" [e2587]
+    - link "user agent" [e2591]
+    - link "style sheets" [e2592]
+    - link "images" [e2593]
+    - link "multimedia" [e2594]
+    - link "downloaded" [e2595]
+    - link "engine" [e2596] (below)
+    - link "[9]" [e2598] (below)
+    - link "JavaScript engines" [e2602] (below)
+    - link "[10]" [e2604] (below)
+    - link "graphical user interface" [e2608] (below)
+    - link "headless browser" [e2609] (below)
+    - link "hyperlinks" [e2611] (below)
+    - link "clicked" [e2612] (below)
+    - link "tapped" [e2613] (below)
+    - link "cache" [e2614] (below)
+    - link "[11]" [e2616] (below)
+    - link "[12]" [e2621] (below)
+    - link "search engine" [e2626] (below)
+    - link "[13]" [e2628] (below)
+    - link "[14]" [e2633] (below)
+    - link "query" [e2638] (below)
+    - link "[15]" [e2640] (below)
+  - region "History" (below)
+    - heading "History" level=2 (below)
+    - link "History of the web browser" [e2650] (below)
+    - link "WorldWideWeb" [e2652] (below)
+    - link "Tim Berners-Lee" [e2653] (below)
+    - link "[16]" [e2655] (below)
+    - link "[17]" [e2660] (below)
+    - link "Nicola Pellow" [e2664] (below)
+    - link "Line Mode Browser" [e2665] (below)
+    - link "dumb terminals" [e2666] (below)
+    - link "[18]" [e2668] (below)
+    - link "Mosaic" [e2672] (below)
+    - link "[19]" [e2674] (below)
+    - link "[20]" [e2679] (below)
+    - link "graphical user interface" [e2683] (below)
+    - link "World Wide Web" [e2684] (below)
+    - link "Netscape" [e2690] (below)
+    - link "Netscape Navigator" [e2691] (below)
+    - link "most popular" [e2692] (below)
+    - link "[21]" [e2694] (below)
+    - link "Microsoft" [e2699] (below)
+    - link "Internet Explorer" [e2700] (below)
+    - link "browser war" [e2701] (below)
+    - link "Windows" [e2702] (below)
+    - link "operating system" [e2703] (below)
+    - … 41 more actionable elements below, incl. "freeware", "[22]", "Mozilla Foundation", "open-source software"
+  - region "Features" (below)
+    - … 34 more actionable elements below, incl. "features", "browsing history", "private mode", "bookmarks"
+  - region "Browser market" (below)
+    - … 18 more actionable elements below, incl. "Usage share of web browsers", "Google Chrome", "[2]", "source code"
+    - region "Market share by type of device" (below)
+      - … 3 more actionable elements below, incl. "since then", "[41]", "[42]"
+  - region "Security" (below)
+    - … 8 more actionable elements below, incl. "Browser security", "hackers", "security holes", "files"
+    - region "Privacy" (below)
+      - … 22 more actionable elements below, incl. "Web tracking", "cookies", "websites", "[44]"
+  - region "See also" (below)
+    - heading "See also" level=2 (below)
+    - … 6 more actionable elements below, incl. "icon", "Internet portal", "Comparison of web browsers", "History of the World Wide Web"
+  - region "References" (below)
+    - … 188 more actionable elements below, incl. 42× "^", 33× "Archived", 7× "the original", 6× "a"
+  - region "External links" (below)
+    - … 4 more actionable elements below, incl. "Wikiversity logo", "Web Browser", "Wikimedia Commons logo", "Web browsers"
+    - navigation "Web browsers" (below)
+      - … 7 more actionable elements below, incl. "v", "t", "e", "Web browsers"
+    - navigation "Timeline of web browsers" (below)
+      - … 5 more actionable elements below, incl. "v", "t", "e", "Timeline"
+  - … 14 more actionable elements below, incl. "Authority control databases", "Edit this at Wikidata", "GND", "United States"
+- contentinfo (below)
+  - … 13 more actionable elements below, incl. "Parsoid", "Creative Commons Attribution-S", "Cookie statement", "Wikimedia Foundation, Inc."

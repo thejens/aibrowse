@@ -1,0 +1,35 @@
+{
+  "about": "Digest eval: read(view=\"digest\") against read's first page, the page's whole text and the outline, in tokens; and how many facts the page must not lose (for the case's focus) the digest keeps. Run with `aibrowse eval digest` (uses Jev; --no-jev for the fallback).",
+  "pages": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Ada_Lovelace",
+      "focus": "when she was born and died, and what she is known for",
+      "keep": ["1815", "1852", "Analytical Engine"]
+    },
+    {
+      "url": "https://docs.python.org/3/library/functools.html",
+      "focus": "what lru_cache does and its parameters",
+      "keep": ["lru_cache", "maxsize", "typed"]
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap",
+      "focus": "the syntax, parameters and return value",
+      "keep": ["flatMap(callbackFn", "thisArg", "A new array"]
+    },
+    {
+      "url": "https://www.gov.uk/apply-renew-passport",
+      "focus": "how to apply and how long it takes",
+      "keep": ["3 weeks", "online"]
+    },
+    {
+      "url": "https://www.rust-lang.org/learn",
+      "focus": "the main resources for learning Rust",
+      "keep": ["The Rust Programming Language", "Rust by Example", "Rustlings"]
+    },
+    {
+      "url": "https://www.postgresql.org/docs/current/functions-json.html",
+      "focus": "the operators for extracting a JSON object field",
+      "keep": ["->", "->>", "#>"]
+    }
+  ]
+}

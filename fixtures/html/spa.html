@@ -1,0 +1,77 @@
+<!doctype html>
+<!-- Source of fixtures/pages/synthetic-spa.json, a Page Model fixture for forms built
+     without <form>, effect hints and live regions. Re-record with:
+     cargo run -p aibrowse -- fixture file://$PWD/fixtures/html/spa.html synthetic-spa --headless --profile fixtures
+     then replace the file:// URLs in the JSON with https://example.com/ (spa.html
+     becomes /app), so no local path ends up in the repository. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Settings · Example</title>
+<style>
+  body { font: 16px system-ui, sans-serif; margin: 0; }
+  header, main, footer { padding: 12px 24px; }
+  label { display: block; margin: 8px 0 2px; }
+  .card { border: 1px solid #ccc; padding: 8px 12px; margin: 12px 0; max-width: 480px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<header>
+  <a href="/">Example</a>
+  <button aria-haspopup="menu" aria-expanded="false">Account</button>
+  <div role="search">
+    <input type="search" aria-label="Search docs">
+    <button type="button">Search</button>
+  </div>
+</header>
+<main>
+  <h1>Settings</h1>
+  <div role="status">Settings saved</div>
+  <div role="alert">Your card was declined.</div>
+  <div aria-live="polite" class="sr-only">3 unread notifications</div>
+  <div aria-live="polite"></div>
+
+  <!-- A profile form as React renders it: no <form>, a type=button submit. -->
+  <div class="card">
+    <h2>Profile</h2>
+    <div><label for="name">Display name</label><div><input id="name" value="Ada"></div></div>
+    <div><label for="bio">Bio</label><div><textarea id="bio"></textarea></div></div>
+    <div><button type="button">Cancel</button> <button type="button">Save changes</button></div>
+  </div>
+
+  <!-- A newsletter box: one field and its button. -->
+  <div class="card">
+    <input type="email" aria-label="Your email" placeholder="you@example.com">
+    <button type="button">Subscribe</button>
+  </div>
+
+  <!-- Two fields with a button each in one container: which goes with which is not
+       for us to guess beyond the closest container. -->
+  <div class="card">
+    <div><input aria-label="Coupon"> <button type="button">Apply</button></div>
+    <div><input aria-label="Gift card"> <button type="button">Apply</button></div>
+  </div>
+
+  <!-- A fieldset groups its fields even without a button. -->
+  <fieldset>
+    <legend>Notifications</legend>
+    <label><input type="checkbox" checked> Email me</label>
+    <label><input type="checkbox"> Text me</label>
+  </fieldset>
+
+  <!-- A lone field outside any form stays on its own line. -->
+  <input aria-label="Filter settings">
+
+  <p>
+    <a href="/export.csv" download>Export CSV</a>
+    <a href="/changelog" target="_blank">Changelog</a>
+    <a href="https://status.example.org/" target="_blank">Status page</a>
+    <button aria-haspopup="dialog">Delete account</button>
+  </p>
+</main>
+<footer>
+  <a href="/privacy">Privacy</a>
+</footer>
+</body>
+</html>

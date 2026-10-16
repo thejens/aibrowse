@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Budget - Grid</title>
+<!-- A spreadsheet built like Google Sheets: the cells are drawn on a canvas, so they are
+     reached through the Name Box (a bare input inside a labelled wrapper) and written
+     through the formula bar; Cmd/Ctrl+D fills a selection down from its first row. -->
+<style>
+  body { font: 13px sans-serif; margin: 0; }
+  #bar { display: flex; gap: 8px; padding: 6px; border-bottom: 1px solid #ccc; }
+  #namebox { width: 70px; }
+  #formula { flex: 1; }
+  canvas { display: block; }
+</style>
+<div id="bar">
+  <div aria-label="Name box (⌘ + J)"><input id="namebox" value="A1"></div>
+  <span>fx</span><input id="formula">
+</div>
+<!-- Inputs parked out of sight, as Sheets keeps its cell editor and a helper textarea:
+     they take no text from a person and must not be offered as fields. -->
+<div role="textbox" contenteditable="true" style="position:absolute;left:4px;top:-9998px;width:0;height:30px"></div>
+<textarea style="position:absolute;left:-10000px;top:-10000px"></textarea>
+<canvas id="grid" width="600" height="300" tabindex="0" aria-label="Grid"></canvas>
+<div role="status" id="status"></div>
+<script>
+  const COLS = 'ABCDEF', ROWS = 12, W = 100, H = 24;
+  // Cell contents by name ("C3": "=A2+10"); values are computed when drawn.
+  window.cells = { A2: '1', A3: '2', A4: '3', A5: '4', A6: '5', A7: '6', A8: '7', A9: '8' };
+  let sel = { c0: 0, r0: 1, c1: 0, r1: 1 };
+  const name = (c, r) => COLS[c] + (r + 1);
+  const parse = (ref) => {
+    const m = /^([A-F])(\d+)$/i.exec(ref.trim());
+    return m && { c: COLS.indexOf(m[1].toUpperCase()), r: Number(m[2]) - 1 };
+  };
+  const value = (ref, depth = 0) => {
+    const raw = cells[ref.toUpperCase()] ?? '';
+    if (!raw.startsWith('=') || depth > 20) return Number(raw) || 0;
+    const expr = raw.slice(1).replace(/[A-F]\d+/gi, (r) => String(value(r, depth + 1)));
+    return /^[\d+\-*/. ()]+$/.test(expr) ? Function(`return (${expr})`)() : NaN;
+  };
+  const shown = (ref) => (cells[ref] === undefined ? '' : String(value(ref)));
+  // A formula moved down by `dr` rows, its references relative, as fill down does.
+  const shift = (raw, dr) => raw.startsWith('=')
+    ? raw.replace(/([A-F])(\d+)/gi, (_, c, r) => c + (Number(r) + dr)) : raw;
+  function draw() {
+    const g = document.getElementById('grid').getContext('2d');
+    g.clearRect(0, 0, 600, 300);
+    for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS.length; c++) {
+      const inSel = c >= sel.c0 && c <= sel.c1 && r >= sel.r0 && r <= sel.r1;
+      g.fillStyle = inSel ? '#e8f0fe' : '#fff';
+      g.fillRect(c * W, r * H, W, H);
+      g.strokeStyle = '#ddd'; g.strokeRect(c * W, r * H, W, H);
+      g.fillStyle = '#000'; g.fillText(shown(name(c, r)), c * W + 4, r * H + 16);
+    }
+    const active = name(sel.c0, sel.r0);
+    document.getElementById('namebox').value = sel.c0 === sel.c1 && sel.r0 === sel.r1
+      ? active : `${active}:${name(sel.c1, sel.r1)}`;
+    document.getElementById('formula').value = cells[active] ?? '';
+    let sum = 0;
+    for (let r = sel.r0; r <= sel.r1; r++) for (let c = sel.c0; c <= sel.c1; c++) sum += value(name(c, r)) || 0;
+    document.getElementById('status').textContent = `Sum: ${sum}`;
+  }
+  document.getElementById('namebox').addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    const [a, b] = e.target.value.split(':');
+    const from = parse(a), to = parse(b ?? a);
+    if (!from || !to) return;
+    sel = { c0: Math.min(from.c, to.c), r0: Math.min(from.r, to.r), c1: Math.max(from.c, to.c), r1: Math.max(from.r, to.r) };
+    draw();
+    document.getElementById('grid').focus();
+  });
+  document.getElementById('formula').addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    cells[name(sel.c0, sel.r0)] = e.target.value;
+    sel = { c0: sel.c0, r0: sel.r0 + 1, c1: sel.c0, r1: sel.r0 + 1 };
+    draw();
+    document.getElementById('grid').focus();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() !== 'd' || !(e.metaKey || e.ctrlKey)) return;
+    e.preventDefault();
+    for (let c = sel.c0; c <= sel.c1; c++) {
+      const top = cells[name(c, sel.r0)] ?? '';
+      for (let r = sel.r0 + 1; r <= sel.r1; r++) cells[name(c, r)] = shift(top, r - sel.r0);
+    }
+    draw();
+  });
+  draw();
+</script>
+</html>

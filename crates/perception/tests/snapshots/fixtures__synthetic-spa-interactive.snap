@@ -1,0 +1,32 @@
+---
+source: crates/perception/tests/fixtures.rs
+expression: "fuse(&raw, Detail::Interactive, None).render()"
+---
+# Settings · Example
+url: https://example.com/app
+viewport: 1440x757, at top of 794px page
+regions: banner, main, contentinfo
+
+- banner
+  - link "Example" [e27]
+  - button "Account" [e30] collapsed opens-menu
+  - search → fill(search: "Search docs" [e2]) submit: button "Search" [e36]
+- main
+  - heading "Settings" level=1
+  - status "Settings saved"
+  - alert "Your card was declined."
+  - status "3 unread notifications"
+  - form → fill(text: "Display name" [e3] value="Ada", textarea: "Bio" [e73]) submit: button "Save changes" [e79]
+    - heading "Profile" level=2
+    - button "Cancel" [e76]
+  - form → fill(email: "Your email" [e4]) submit: button "Subscribe" [e88]
+  - form → fill(text: "Coupon" [e5]) submit: button "Apply" [e98]
+  - form → fill(text: "Gift card" [e6]) submit: button "Apply" [e103]
+  - form "Notifications" → fill(checkbox: "Email me" [e115] checked, checkbox: "Text me" [e119])
+  - textbox "Filter settings" [e7]
+  - link "Export CSV" [e128] download
+  - link "Changelog" [e131] new-tab
+  - link "Status page" [e134] new-tab -> status.example.org
+  - button "Delete account" [e137] opens-dialog
+- contentinfo (below)
+  - link "Privacy" [e144] (below)

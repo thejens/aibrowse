@@ -1,0 +1,59 @@
+<!doctype html>
+<!-- Source of fixtures/pages/synthetic-signup.json, a Page Model fixture for forms,
+     page type and regions. Re-record with:
+     cargo run -p aibrowse -- fixture file://$PWD/fixtures/html/signup.html synthetic-signup --headless
+     then replace the file:// URLs in the JSON with https://example.com/ (signup.html
+     becomes /signup), so no local path ends up in the repository. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Create your account · Example</title>
+<style>
+  body { font: 16px system-ui, sans-serif; margin: 0; }
+  header, footer, aside, main { padding: 12px 24px; }
+  header nav a { margin-right: 12px; }
+  main { max-width: 520px; }
+  label { display: block; margin: 10px 0 4px; }
+  fieldset { border: 1px solid #ccc; margin: 12px 0; }
+</style>
+</head>
+<body>
+<header>
+  <a href="/">Example</a>
+  <nav aria-label="Primary">
+    <a href="/pricing">Pricing</a>
+    <a href="/docs">Docs</a>
+    <a href="/login">Sign in</a>
+  </nav>
+</header>
+<main>
+  <h1>Create your account</h1>
+  <form aria-label="Create account" action="/signup" method="post">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" autocomplete="email" required aria-invalid="true" value="not-an-email">
+    <label for="pw">Password</label>
+    <input id="pw" name="password" type="password" autocomplete="new-password" required>
+    <label for="country">Country</label>
+    <select id="country" name="country">
+      <option>Sweden</option><option>Norway</option><option>Denmark</option>
+      <option>Finland</option><option>Iceland</option><option>Germany</option>
+    </select>
+    <fieldset>
+      <legend>Plan</legend>
+      <label><input type="radio" name="plan" value="free" checked> Free</label>
+      <label><input type="radio" name="plan" value="pro"> Pro</label>
+    </fieldset>
+    <label><input type="checkbox" name="terms" required> I accept the terms</label>
+    <a href="/terms">Read the terms</a>
+    <button>Create account</button>
+  </form>
+</main>
+<aside aria-label="Help">
+  <a href="/help/signup">Trouble signing up?</a>
+</aside>
+<footer>
+  <a href="/privacy">Privacy</a>
+  <a href="/contact">Contact</a>
+</footer>
+</body>
+</html>

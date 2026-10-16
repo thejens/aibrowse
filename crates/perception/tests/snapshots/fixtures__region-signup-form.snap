@@ -1,0 +1,13 @@
+---
+source: crates/perception/tests/fixtures.rs
+expression: "fuse(raw(fixture), Detail::Interactive, Some(region)).render()"
+---
+# Create your account · Example
+url: https://example.com/signup
+viewport: 1440x757, whole page visible
+page: signup (new-password field)
+auth: only the user can complete this; request_handoff if they are present, and never ask for credentials or codes in chat
+region: form (only this part of the page, in full)
+
+- form "Create account" (signup) → fill(email: [e48] value="not-an-email" required invalid, new-password: "Password" [e53] required, select: "Country" [e3] value="Sweden" collapsed options: Sweden|Norway|Denmark|Finland|+2, radio(plan): "Free" [e80] checked | "Pro" [e84], checkbox: "I accept the terms" [e89] invalid) submit: button "Create account" [e95]
+  - link "Read the terms" [e92]

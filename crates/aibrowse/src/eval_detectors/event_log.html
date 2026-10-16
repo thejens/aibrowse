@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Event logger</title>
+<style>
+  body { font: 16px/1.5 system-ui, sans-serif; margin: 0; padding: 32px; }
+  main { position: relative; height: 2600px; }
+  button { font: inherit; padding: 10px 18px; position: absolute; }
+  label { position: absolute; display: flex; flex-direction: column; gap: 4px; }
+  input, textarea { font: inherit; padding: 6px; width: 320px; }
+  #alpha { left: 40px; top: 90px; }
+  #bravo { left: 620px; top: 160px; }
+  #charlie { left: 260px; top: 420px; }
+  #name { left: 40px; top: 260px; }
+  #message { left: 420px; top: 300px; }
+  #far { left: 300px; top: 1500px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Event logger</h1>
+  <p>Records every input event this page receives, for the aibrowse detector eval.</p>
+  <button id="alpha">Alpha</button>
+  <button id="bravo">Bravo</button>
+  <button id="charlie">Charlie</button>
+  <label id="name">Name <input id="name-input" autocomplete="off"></label>
+  <label id="message">Message <textarea id="message-input" rows="3"></textarea></label>
+  <button id="far">Far away</button>
+</main>
+<script>
+  // Captured on window in the capture phase, so every event is seen exactly once and
+  // before the page could stop it. Only fields a detection script can read are logged.
+  window.__events = [];
+  const num = (v) => (typeof v === 'number' && isFinite(v) ? v : 0);
+  const record = (e) => {
+    const r = {
+      kind: e.type,
+      t: e.timeStamp,
+      trusted: e.isTrusted,
+      target: (e.target && e.target.id) || (e.target && e.target.nodeName) || '',
+    };
+    if (e instanceof MouseEvent) {
+      Object.assign(r, {
+        x: e.clientX, y: e.clientY, screenX: e.screenX, screenY: e.screenY,
+        movementX: num(e.movementX), movementY: num(e.movementY),
+        button: e.button, buttons: e.buttons, detail: e.detail,
+      });
+    }
+    if (e instanceof PointerEvent) {
+      Object.assign(r, {
+        pointerType: e.pointerType, pressure: e.pressure,
+        width: e.width, height: e.height, isPrimary: e.isPrimary,
+        coalesced: e.getCoalescedEvents ? e.getCoalescedEvents().length : 0,
+      });
+    }
+    if (e instanceof WheelEvent) {
+      Object.assign(r, { deltaX: e.deltaX, deltaY: e.deltaY, deltaMode: e.deltaMode });
+    }
+    if (e instanceof KeyboardEvent) {
+      Object.assign(r, {
+        key: e.key, code: e.code, keyCode: e.keyCode, repeat: e.repeat,
+        location: e.location, shift: e.shiftKey,
+      });
+    }
+    if (e instanceof InputEvent) {
+      Object.assign(r, { inputType: e.inputType, data: e.data || '' });
+    }
+    window.__events.push(r);
+  };
+  for (const type of ['mousemove', 'mousedown', 'mouseup', 'click', 'wheel',
+                      'pointermove', 'pointerdown', 'pointerup',
+                      'keydown', 'keyup', 'input', 'scroll']) {
+    window.addEventListener(type, record, { capture: true, passive: true });
+  }
+  // The window's own geometry, against which event screen coordinates are checked.
+  window.__context = () => ({
+    screenX: window.screenX, screenY: window.screenY,
+    outerWidth: window.outerWidth, outerHeight: window.outerHeight,
+    innerWidth: window.innerWidth, innerHeight: window.innerHeight,
+    devicePixelRatio: window.devicePixelRatio,
+  });
+</script>
+</body>
+</html>

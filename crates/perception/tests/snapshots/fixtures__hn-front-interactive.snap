@@ -1,0 +1,183 @@
+---
+source: crates/perception/tests/fixtures.rs
+expression: "fuse(&raw, Detail::Interactive, None).render()"
+---
+# Hacker News
+url: https://news.ycombinator.com/
+viewport: 1425x757, at top of 1267px page
+page: listing (92 items)
+auth: signed out ("login" is offered)
+
+- link [e512] -> news.ycombinator.com
+- link "Hacker News" [e517]
+- link "new" [e518]
+- link "past" [e519]
+- link "comments" [e520]
+- link "ask" [e521]
+- link "show" [e522]
+- link "jobs" [e493]
+- link "submit" [e523]
+- link "login" [e526]
+- link "upvote" [e537]
+- link "Huawei and Qualcomm Announce Broad Patent License Agreement" [e541] -> huawei.com/en/news/2026/10/qualcomm-broa…
+- link "huawei.com" [e543]
+- link "0xedb" [e550]
+- link "22 comments" [e552]
+- link "hide" [e554]
+- link "upvote" [e562]
+- link "Run Qwen 3.8 Flash Next (125B) on consumer hardware (RTX 4090) at 100T/s" [e566] -> github.com/Niko1221/Strata
+- link "github.com/niko1221" [e568]
+- link "snehesht" [e575]
+- link "20 hours ago" [e577]
+- link "hide" [e579]
+- link "upvote" [e587]
+- link "Sales of sub-€25,000 electric car models set to rise sevenfold" [e591] -> transportenvironment.org/articles/wave-o…
+- link "transportenvironment.org" [e593]
+- link "geox" [e600]
+- link "33 comments" [e602]
+- link "hide" [e604]
+- link "upvote" [e612]
+- link "Denmark Data Breach Exposes 8.8M People's Personal Data" [e616] -> cpr.dk/cpr-nyt/nyhedsarkiv/2026/okt/omfa…
+- link "cpr.dk" [e618]
+- link "clan" [e625]
+- link "1 hour ago" [e627]
+- link "hide" [e629]
+- link "upvote" [e637]
+- link "In the wake of Tippett Studios’ closure, a digital archive appears online" [e641] -> filmstories.co.uk/news/tippett-studios-i…
+- link "filmstories.co.uk" [e643]
+- link "rdmuser" [e650]
+- link "9 hours ago" [e652]
+- link "hide" [e654]
+- link "upvote" [e662]
+- link "A browser-native classic Visual Basic VB6 IDE" [e666] -> wieslawsoltes.github.io/VB6
+- link "wieslawsoltes.github.io" [e668]
+- link "wiso" [e675]
+- link "14 hours ago" [e677]
+- link "hide" [e679]
+- link "upvote" [e687]
+- link "Gods in the Classroom: Religion and Education in First Millennium BCE Babylonia" [e691] -> cambridge.org/core/journals/iraq/article…
+- link "cambridge.org" [e693]
+- link "pseudolus" [e700]
+- link "6 hours ago" [e702]
+- link "hide" [e704]
+- link "upvote" [e712]
+- link "The Tao of Backup" [e716] -> taobackup.com/index.html
+- link "taobackup.com" [e718]
+- link "vntok" [e725]
+- link "9 hours ago" [e727]
+- link "hide" [e729]
+- link "upvote" [e737]
+- link "We ported the original Doom to SQL" [e741] -> cedardb.com/blog/sqldoom
+- link "cedardb.com" [e743]
+- link "Vaslo" [e750]
+- link "5 hours ago" [e752]
+- link "hide" [e754]
+- link "upvote" [e762]
+- link "Infidel goes wild" [e766] -> blog.zarfhome.com/2026/10/infidel-goes-w…
+- link "zarfhome.com" [e768]
+- link "tobr" [e775]
+- link "12 hours ago" [e777]
+- link "hide" [e779]
+- link "upvote" [e787]
+- link "Replacement of petroleum based products with plant-based materials (2025)" [e791] -> onlinelibrary.wiley.com/doi/10.1002/eng2…
+- link "wiley.com" [e793]
+- link "thelastgallon" [e800]
+- link "4 hours ago" [e802]
+- link "hide" [e804]
+- link "upvote" [e812]
+- link "Turn off Apple Intelligence on macOS 27 and get its disk space back" [e816] -> github.com/omlahore/RemoveMacAI
+- link "github.com/omlahore" [e818]
+- link "privacyisntdead" [e825]
+- link "13 hours ago" [e827]
+- link "hide" [e829]
+- link "upvote" [e837]
+- link "Powerless F1 drivers frustrated by Bahrain F1 software glitch" [e841] -> motorsport.com/f1/news/horrible-totally-…
+- link "motorsport.com" [e843]
+- link "llm_nerd" [e850]
+- link "159 comments" [e852]
+- link "hide" [e854]
+- link "upvote" [e862]
+- link "Tell HN: Bob Cringely has died" [e866]
+- link "paveworld" [e872]
+- link "hide" [e876]
+- link "upvote" [e884]
+- link "Demystifying Tufte's data-ink ratio" [e888] -> tuftesrazor.scienceux.org
+- link "scienceux.org" [e890]
+- link "s4074433" [e897]
+- link "10 hours ago" [e899]
+- link "hide" [e901]
+- link "upvote" [e909]
+- link "Improper redaction reveals Google Data Center water and electricity usage" [e913] -> 1011now.com/2026/09/30/more-questions-th…
+- link "1011now.com" [e915]
+- link "sensanaty" [e922]
+- link "13 hours ago" [e924]
+- link "hide" [e926]
+- link "upvote" [e934]
+- link "Decision models like Jev don't beat LLM-as-a-judge or traditional classifiers" [e938] -> developers.redhat.com/articles/2026/10/0…
+- link "redhat.com" [e940]
+- link "tomncooper" [e947]
+- link "5 hours ago" [e949]
+- link "hide" [e951]
+- link "upvote" [e959]
+- link "Automating my 35mm film scanning pipeline" [e963] -> shannadige.com/blog/darkroom
+- link "shannadige.com" [e965]
+- link "shannadige" [e972]
+- link "19 hours ago" [e974]
+- link "hide" [e976]
+- link "upvote" [e984]
+- link "'Neanderthals Among Us' review" [e988] -> historytoday.com/archive/review/neandert…
+- link "historytoday.com" [e990]
+- link "pepys" [e997]
+- link "15 hours ago" [e999]
+- link "hide" [e1001]
+- link "upvote" [e1009]
+- link "Self-hosted HTTP tunnels with SSH and Nginx" [e1013] -> vincent.bernat.ch/en/blog/2026-http-over…
+- link "bernat.ch" [e1015]
+- link "renehsz" [e1022]
+- link "10 hours ago" [e1024]
+- link "hide" [e1026]
+- link "upvote" [e1034]
+- link "Lace and Labor: Lessons from the actual Luddites" [e1038] -> articlesofinterest.substack.com/p/lace-a…
+- link "articlesofinterest.substack.com" [e1040]
+- link "surprisetalk" [e1047] (below)
+- link "6 hours ago" [e1049] (below)
+- link "hide" [e1051] (below)
+- link "upvote" [e1059] (below)
+- link "Show HN: Glashütte Trash Clock – A 30-minute pendulum clock made from trash" [e1063] -> niklasroy.com/gtc (below)
+- link "niklasroy.com" [e1065] (below)
+- link "r0r0" [e1072] (below)
+- link "21 hours ago" [e1074] (below)
+- link "hide" [e1076] (below)
+- link "upvote" [e1084] (below)
+- link "Watson Jr. memo about CDC 6600 (1963)" [e1088] -> computerhistory.org/revolution/supercomp… (below)
+- link "computerhistory.org" [e1090] (below)
+- link "mooreds" [e1097] (below)
+- link "12 hours ago" [e1099] (below)
+- link "hide" [e1101] (below)
+- link "upvote" [e1109] (below)
+- link "What is going on with ceiling fans" [e1113] -> mcmansionhell.com/post/82912791955215155… (below)
+- link "mcmansionhell.com" [e1115] (below)
+- link "colinprince" [e1122] (below)
+- link "261 comments" [e1124] (below)
+- link "hide" [e1126] (below)
+- link "upvote" [e1134] (below)
+- link "Bill Draper has died" [e1138] -> nytimes.com/2026/09/30/technology/willia… (below)
+- link "nytimes.com" [e1140] (below)
+- link "bookofjoe" [e1147] (below)
+- link "20 hours ago" [e1149] (below)
+- link "hide" [e1151] (below)
+- link "upvote" [e1159] (below)
+- link "How to scale intent, quality, and artistry with AI [video]" [e1163] -> youtube.com/watch (below)
+- link "youtube.com" [e1165] (below)
+- link "simonjgreen" [e1172] (below)
+- link "15 hours ago" [e1174] (below)
+- link "hide" [e1176] (below)
+- link "upvote" [e1184] (below)
+- link "Interview with Chicken Scheme Maintainer Sjamaan/Peter Bex" [e1188] -> alexalejandre.com/interviews/peter-bex (below)
+- link "alexalejandre.com" [e1190] (below)
+- link "veqq" [e1197] (below)
+- link "11 hours ago" [e1199] (below)
+- link "hide" [e1201] (below)
+- link "upvote" [e1209] (below)
+- … 25 more actionable elements below, incl. 3× "hide", 2× "upvote"
+- form → fill(text: "Search" [e1305] (below))
